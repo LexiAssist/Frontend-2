@@ -1,0 +1,21 @@
+{
+  "name": "LexiAssist",
+  "short_name": "LexiAssist",
+  "description": "AI-powered learning assistant designed to make reading, studying, and writing easier for students who learn differently.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3c8350",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

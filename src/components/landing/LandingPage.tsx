@@ -169,8 +169,8 @@ export default function LandingPage() {
         <div className="bg-white/90 backdrop-blur-md rounded-full px-4 sm:px-6 lg:px-10 py-3 sm:py-4 flex items-center justify-between shadow-sm border border-[#cdcfcd]/30">
           <Logo href="/" size="md" />
           <div className="flex items-center gap-2 sm:gap-4">
-            {/* <Button variant="white" href="/waitlist">Join the Waitlist</Button> */}
-            <Button variant="primary" href="/waitlist">Join the Waitlist</Button>
+            <Button variant="white" href="/login">Login</Button>
+            <Button variant="primary" href="/register">Sign Up</Button>
           </div>
         </div>
       </motion.nav>
@@ -232,7 +232,8 @@ export default function LandingPage() {
               transition={{ delay: 0.4 }}
             >
               {/* <Button variant="primary" href="/waitlist">ed</Button> */}
-              <Button variant="white" href="/waitlist">Join the Waitlist</Button>
+              <Button variant="primary" href="/register">Sign Up</Button>
+              <Button variant="white" href="/login">Login</Button>
             </motion.div>
           </motion.div>
 
@@ -512,7 +513,8 @@ function StaticLandingPage() {
           <Logo href="/" size="md" />
           <div className="flex items-center gap-2 sm:gap-4">
             {/* <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link> */}
-            <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Join the Waitlist</Link>
+            <Link href="/login" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link>
+            <Link href="/register" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Sign Up</Link>
           </div>
         </div>
       </nav>
@@ -531,7 +533,8 @@ function StaticLandingPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Join the Waitlist</Link>
+              <Link href="/login" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link>
+            <Link href="/register" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Sign Up</Link>
               {/* <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link> */}
             </div>
           </div>
@@ -687,7 +690,8 @@ function StaticLandingPage() {
             </p>
           </div>
           <div className="flex justify-center">
-            <Link href="/waitlist" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Join the Waitlist</Link>
+            <Link href="/login" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-white text-[#272a28] border border-[#cdcfcd] hover:bg-[#f5f5f5]">Login</Link>
+            <Link href="/register" className="inline-flex items-center justify-center rounded-full px-6 sm:px-8 py-3 sm:py-4 font-semibold text-sm sm:text-base bg-[#377749] text-white hover:bg-[#2b5d39]">Sign Up</Link>
           </div>
         </div>
       </section>
@@ -864,7 +868,8 @@ function CTASection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <Button variant="white" href="/waitlist">Join the Waitlist</Button>
+          <Button variant="white" href="/login">Login</Button>
+          <Button variant="primary" href="/register">Sign Up</Button>
         </motion.div>
       </motion.div>
     </section>
