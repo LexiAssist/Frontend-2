@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Emergency Logout</title>
+  <script>
+    localStorage.clear();
+    sessionStorage.clear();
+    document.cookie.split(";").forEach(function(c) { 
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+    });
+    window.location.href = '/login';
+  </script>
+</head>
+<body>
+  Clearing auth and redirecting to login...
+</body>
+</html>

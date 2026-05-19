@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # Frontend Service (Next.js)
+  # ==========================================
+  lexiassist-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # You can pass build args here if needed
+        NODE_ENV: production
+    container_name: lexiassist-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # Set to 'true' for mock mode (no backend needed)
+      # Set to 'false' when connecting to real backend
+      - NEXT_PUBLIC_MOCK_MODE=false
+      
+      # Your backend API URL (when not in mock mode)
+      - NEXT_PUBLIC_API_URL=http://lexiassist-backend:8080
+    networks:
+      - lexiassist-network
+    restart: unless-stopped
+    
+    # Uncomment this if you have the backend service below running
+    # depends_on:
+    #   - lexiassist-backend
+
+  # ==========================================
+  # Backend Service (Go) - UNCOMMENT WHEN READY
+  # ==========================================
+  # lexiassist-backend:
+    build:
+      context: ../your-go-backend  # Path to your Go backend
+      dockerfile: Dockerfile
+    container_name: lexiassist-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DATABASE_URL=postgresql://user:pass@db:5432/lexiassist
+    networks:
+      - lexiassist-network
+    restart: unless-stopped
+
+  ==========================================
+  Database (PostgreSQL) - OPTIONAL
+  ==========================================
+  db:
+    image: postgres:15-alpine
+    container_name: lexiassist-db
+    environment:
+      - POSTGRES_USER=lexiuser
+      - POSTGRES_PASSWORD=yourpassword
+      - POSTGRES_DB=lexiassist
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - lexiassist-network
+
+networks:
+  lexiassist-network:
+    driver: bridge
+
+# volumes:
+#   postgres_data:
