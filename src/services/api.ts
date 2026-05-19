@@ -900,7 +900,7 @@ export const flashcardApi = {
 export const quizApi = {
   getAll: async (limit = 20, offset = 0): Promise<Quiz[]> => {
     const headers = await getAuthHeaders();
-    const response = await fetch(`/api/v1/quiz?limit=${limit}&offset=${offset}`, {
+    const response = await fetch(`/api/v1/quizzes?limit=${limit}&offset=${offset}`, {
       headers,
     });
     
@@ -918,7 +918,7 @@ export const quizApi = {
   
   create: async (data: CreateQuizData): Promise<Quiz> => {
     const headers = await getAuthHeaders();
-    const response = await fetch('/api/v1/quiz', {
+    const response = await fetch('/api/v1/quizzes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
