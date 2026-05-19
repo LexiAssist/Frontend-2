@@ -1408,7 +1408,10 @@ export const readingApi = {
     return fetchFormData('/reading/analyse', formData);
   },
   
-  // SSE Streaming version for real-time progress
+  // Streaming-compatible wrapper around the non-streaming /reading/analyse endpoint.
+  // The backend does not currently expose a streaming analysis endpoint, so we
+  // call the regular endpoint and emit a single `complete` event with the full
+  // result. This keeps the UI code unchanged while the endpoint is missing.
   analyseStream: async (
     file: File,
     userId: string,
@@ -1418,7 +1421,6 @@ export const readingApi = {
     voice = 'Zephyr',
     temperature = 1.0
   ): Promise<void> => {
-    // Helper to create FormData
     const createFormData = () => {
       const fd = new FormData();
       fd.append('file', file);
@@ -1428,61 +1430,43 @@ export const readingApi = {
       fd.append('temperature', temperature.toString());
       return fd;
     };
-    
-    // Ensure we have a valid token before starting
+
     const token = await tokenManager.getValidToken();
-    
     if (!token) {
       onError(new Error('Not authenticated'));
       return;
     }
-    
-    try {
-      const response = await fetch('/api/v1/reading/analyse/stream', {
+
+    const doRequest = async (authToken: string) => {
+      return fetch('/api/v1/reading/analyse', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: { 'Authorization': `Bearer ${authToken}` },
         body: createFormData(),
       });
-      
-      // Handle 401 by refreshing and retrying once
+    };
+
+    try {
+      let response = await doRequest(token);
+
       if (response.status === 401) {
         const refreshed = await tokenManager.handleUnauthorized();
-        
         if (refreshed) {
           const newToken = await tokenManager.getValidToken();
-          const retryResponse = await fetch('/api/v1/reading/analyse/stream', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${newToken}`,
-            },
-            body: createFormData(),
-          });
-          
-          if (!retryResponse.ok) {
-            throw new Error(`HTTP error! status: ${retryResponse.status}`);
-          }
-          
-          await processStream(retryResponse, onEvent);
-          return;
+          response = await doRequest(newToken!);
         } else {
           throw new Error('Session expired. Please log in again.');
         }
       }
-      
+
       if (!response.ok) {
         const errorText = await response.text().catch(() => 'Unknown error');
         throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
-      
-      await processStream(response, onEvent);
+
+      const data = (await response.json()) as ReadingAnalysisResponse;
+      onEvent({ type: 'complete', data });
     } catch (error) {
-      if (error instanceof Error && error.name === 'AbortError') {
-        onError(new Error('Analysis is taking longer than expected. Please try with a smaller document'));
-      } else {
-        onError(error as Error);
-      }
+      onError(error instanceof Error ? error : new Error(String(error)));
     }
   },
   
