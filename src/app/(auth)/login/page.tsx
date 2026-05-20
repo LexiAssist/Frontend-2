@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/useAuth";
 import { APIError } from "@/lib/errorHandler";
 import { Icon } from "@/components/Icon";
-import { useRouter } from "next/navigation";
 import Logo from "@/components/auth/Logo";
 import Image from "next/image";
 
