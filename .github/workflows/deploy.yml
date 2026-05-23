@@ -37,6 +37,9 @@ jobs:
         env:
           NEXT_PUBLIC_API_GATEWAY_URL: ${{ secrets.NEXT_PUBLIC_API_GATEWAY_URL }}
           NEXT_PUBLIC_API_PROXY_URL: ${{ secrets.NEXT_PUBLIC_API_PROXY_URL }}
+          NEXT_PUBLIC_AI_PROXY_URL: ${{ secrets.NEXT_PUBLIC_AI_PROXY_URL }}
+          NEXT_PUBLIC_WS_URL: ${{ secrets.NEXT_PUBLIC_WS_URL }}
+          NEXT_PUBLIC_INGESTION_URL: ${{ secrets.NEXT_PUBLIC_INGESTION_URL }}
           NEXT_PUBLIC_USE_MOCK_API: false
 
   deploy:
@@ -64,6 +67,9 @@ jobs:
           build-args: |
             NEXT_PUBLIC_API_GATEWAY_URL=${{ secrets.NEXT_PUBLIC_API_GATEWAY_URL }}
             NEXT_PUBLIC_API_PROXY_URL=${{ secrets.NEXT_PUBLIC_API_PROXY_URL }}
+            NEXT_PUBLIC_AI_PROXY_URL=${{ secrets.NEXT_PUBLIC_AI_PROXY_URL }}
+            NEXT_PUBLIC_WS_URL=${{ secrets.NEXT_PUBLIC_WS_URL }}
+            NEXT_PUBLIC_INGESTION_URL=${{ secrets.NEXT_PUBLIC_INGESTION_URL }}
             NEXT_PUBLIC_USE_MOCK_API=false
 
       - name: Deploy to staging server
