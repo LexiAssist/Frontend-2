@@ -70,19 +70,19 @@ export default function GoalsPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between mb-8 sm:mb-10 pt-8">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-[#272a28] text-2xl sm:text-3xl tracking-tight font-bold">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 sm:mb-10 pt-8 gap-5 border-b border-slate-100 pb-8">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-[#272a28] text-2xl sm:text-3xl tracking-[-0.035em] font-black leading-tight">
             Learning Goals
           </h1>
-          <p className="text-[#555c56] text-sm sm:text-base">
+          <p className="text-[#555c56] text-sm sm:text-[15px] font-medium leading-relaxed">
             Set targets and track your academic progress
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 bg-[var(--primary-500)] text-white px-4 py-2 rounded-lg hover:bg-[var(--primary-600)] transition-colors"
+            className="flex items-center gap-2 bg-[var(--primary-500)] text-white px-5 py-2.5 rounded-xl hover:bg-[var(--primary-600)] active:scale-[0.98] transition-all font-bold text-sm shadow-md shadow-emerald-800/10"
           >
             <Plus className="w-4 h-4" />
             <span>New Goal</span>
@@ -94,43 +94,45 @@ export default function GoalsPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-48 bg-slate-100 animate-pulse rounded-xl" />
+            <div key={i} className="h-48 bg-slate-50 animate-pulse rounded-2xl" />
           ))}
         </div>
       ) : goals && goals.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {goals.map((goal) => (
-            <div key={goal.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="font-semibold text-slate-900 text-lg">{goal.title}</h3>
-                  <p className="text-sm text-slate-500 mt-1">{goal.description}</p>
+            <div key={goal.id} className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:border-slate-200 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex flex-col">
+              <div className="flex justify-between items-start mb-5 gap-3">
+                <div className="min-w-0">
+                  <h3 className="font-bold text-slate-800 text-[16px] sm:text-[17px] tracking-tight leading-snug">{goal.title}</h3>
+                  <p className="text-sm font-medium text-slate-400 mt-1.5 leading-relaxed truncate-2-lines">{goal.description}</p>
                 </div>
-                <div className="p-2 bg-[var(--primary-50)] text-[var(--primary-600)] rounded-lg">
+                <div className="p-3 bg-[#EAF4EE] text-[var(--primary-600)] rounded-xl shrink-0 shadow-inner">
                   <Target className="w-5 h-5" />
                 </div>
               </div>
               
               <div className="mt-auto pt-4 border-t border-slate-100">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-medium text-slate-500 uppercase">Progress</span>
-                  <span className="text-sm font-semibold text-slate-700">
+                <div className="flex justify-between items-center mb-2 px-0.5">
+                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Progress</span>
+                  <span className="text-sm font-bold text-slate-700">
                     {goal.current_value} / {goal.target_value}
                   </span>
                 </div>
-                <div className="w-full bg-slate-100 rounded-full h-2 mb-4">
+                <div className="w-full bg-slate-100 rounded-full h-2.5 mb-4 overflow-hidden">
                   <div 
-                    className="bg-[var(--primary-500)] h-2 rounded-full" 
+                    className="bg-gradient-to-r from-[var(--primary-400)] to-[var(--primary-600)] h-full rounded-full transition-all duration-300" 
                     style={{ width: `${Math.min(100, Math.max(0, ((goal.current_value ?? 0) / (goal.target_value ?? 1)) * 100))}%` }}
                   />
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  {renderGoalStatus(goal.status ?? '')}
+                  <div className="font-bold tracking-tight">
+                    {renderGoalStatus(goal.status ?? '')}
+                  </div>
                   {goal.status === 'in_progress' && (
                     <button 
                       onClick={() => completeGoal(goal.id)}
-                      className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded transition-colors"
+                      className="text-xs font-bold bg-[#EAF4EE] hover:bg-[#D5EADF] text-[#2D5A3D] px-3.5 py-1.5 rounded-lg active:scale-95 transition-all shadow-sm"
                     >
                       Mark Complete
                     </button>
@@ -141,17 +143,17 @@ export default function GoalsPage() {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-16 bg-white border border-slate-200 rounded-2xl border-dashed">
-          <div className="w-16 h-16 bg-[var(--primary-50)] text-[var(--primary-500)] rounded-full flex items-center justify-center mb-4">
-            <Target className="w-8 h-8" />
+        <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-100 shadow-sm rounded-2xl border-dashed border-2 max-w-2xl mx-auto">
+          <div className="w-16 h-16 bg-[#EAF4EE] text-[var(--primary-500)] rounded-full flex items-center justify-center mb-4 shadow-inner">
+            <Target className="w-8 h-8 stroke-[2.2]" />
           </div>
-          <h2 className="text-xl font-semibold text-slate-900 mb-2">No learning goals yet</h2>
-          <p className="text-slate-500 text-center max-w-md mb-6">
+          <h2 className="text-xl font-bold tracking-tight text-slate-800 mb-2">No learning goals yet</h2>
+          <p className="text-slate-500 text-center max-w-sm mb-6 text-sm font-medium leading-relaxed">
             Set up goals to track your study hours, quiz scores, and course completion.
           </p>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-[var(--primary-500)] text-white px-6 py-2.5 rounded-lg hover:bg-[var(--primary-600)] transition-colors font-medium"
+            className="bg-[var(--primary-500)] text-white px-6 py-2.5 rounded-xl hover:bg-[var(--primary-600)] active:scale-[0.98] transition-all font-bold text-sm shadow-md shadow-emerald-800/10"
           >
             Create Your First Goal
           </button>
@@ -160,74 +162,77 @@ export default function GoalsPage() {
 
       {/* Modal for creating a new goal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] border border-slate-100 animate-in fade-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-slate-900">Create New Goal</h2>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+              <h2 className="text-lg sm:text-xl font-bold tracking-tight text-slate-800">Create New Goal</h2>
+              <button 
+                onClick={() => setIsModalOpen(false)} 
+                className="text-slate-400 hover:text-slate-600 p-1 hover:bg-slate-100 rounded-full transition"
+              >
                 <XCircle className="w-6 h-6" />
               </button>
             </div>
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Title</label>
                 <input 
                   type="text" 
                   required
                   value={formData.title}
                   onChange={e => setFormData({...formData, title: e.target.value})}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--primary-500)] focus:border-transparent outline-none"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6]/40 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-[var(--primary-500)]/10 focus:border-[var(--primary-500)] transition-all text-slate-800 font-medium"
                   placeholder="e.g., Read Biology Chapter 3"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Description (Optional)</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Description (Optional)</label>
                 <textarea 
                   value={formData.description}
                   onChange={e => setFormData({...formData, description: e.target.value})}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--primary-500)] focus:border-transparent outline-none resize-none h-20"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6]/40 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-[var(--primary-500)]/10 focus:border-[var(--primary-500)] transition-all text-slate-700 leading-relaxed font-medium resize-none h-24"
                   placeholder="Additional details..."
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Target Score</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Target Value</label>
                 <input 
                   type="number" 
                   required
                   min="1"
                   value={formData.target_score}
                   onChange={e => setFormData({...formData, target_score: Number(e.target.value)})}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--primary-500)] focus:border-transparent outline-none"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6]/40 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-[var(--primary-500)]/10 focus:border-[var(--primary-500)] transition-all text-slate-800 font-medium"
                   placeholder="e.g., 60 (minutes, score, etc.)"
                 />
-                <p className="text-xs text-slate-500 mt-1">Target value: minutes for study time, percentage for quiz scores, etc.</p>
+                <p className="text-[11px] text-slate-400 font-semibold mt-2 leading-relaxed">Target value: minutes for study time, percentage for quiz scores, etc.</p>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Target Date (Optional)</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Target Date (Optional)</label>
                 <input 
                   type="date" 
                   value={formData.target_date}
                   onChange={e => setFormData({...formData, target_date: e.target.value})}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--primary-500)] focus:border-transparent outline-none"
+                  className="w-full px-3.5 py-2.5 bg-[#FAF9F6]/40 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-[var(--primary-500)]/10 focus:border-[var(--primary-500)] transition-all text-slate-800 font-medium"
                 />
               </div>
               
-              <div className="pt-4 flex gap-3">
+              <div className="pt-6 flex gap-4 border-t border-slate-100 mt-6">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 px-4 py-2 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium transition-colors"
+                  className="flex-1 px-4 py-3 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl font-semibold text-sm active:scale-[0.98] transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isCreating}
-                  className="flex-1 px-4 py-2 text-white bg-[var(--primary-500)] hover:bg-[var(--primary-600)] rounded-lg font-medium transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-3 text-white bg-[var(--primary-500)] hover:bg-[var(--primary-600)] rounded-xl font-bold text-sm active:scale-[0.98] transition-all shadow-md shadow-emerald-800/10 disabled:opacity-50"
                 >
                   {isCreating ? 'Creating...' : 'Save Goal'}
                 </button>

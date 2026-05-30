@@ -92,32 +92,34 @@ function ToolCard({
   href,
 }: ToolCardProps) {
   return (
-    <Link href={href} className="block group">
+    <Link href={href} className="block group h-full">
       <motion.div
-        whileHover={{ y: -4 }}
+        whileHover={{ 
+          y: -6, 
+          boxShadow: "0 25px 30px -10px rgba(0, 0, 0, 0.04), 0 10px 15px -8px rgba(0, 0, 0, 0.02)"
+        }}
         whileTap={{ scale: 0.98 }}
-        className="relative overflow-hidden rounded-2xl cursor-pointer transition-shadow duration-200 hover:shadow-xl aspect-[2/1] p-6"
+        transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+        className="relative overflow-hidden rounded-2xl cursor-pointer border border-black/5 p-6 min-h-[175px] sm:min-h-[195px] flex items-center transition-all duration-300 w-full"
         style={{ backgroundColor: bgColor }}
       >
         {/* Puzzle pattern background */}
         <PuzzlePattern />
 
-        <div className="relative z-10 h-full card-inner">
+        <div className="relative z-10 flex items-center justify-between gap-4 w-full h-full">
           {/* Text Content - Left aligned */}
-          <div className="card-text">
-            <h3 className="text-[#272a28] text-base sm:text-lg lg:text-xl tracking-tight leading-snug font-bold whitespace-pre-line">
+          <div className="flex flex-col gap-1.5 max-w-[65%] text-left">
+            <h3 className="text-slate-800 text-base sm:text-lg tracking-tight leading-snug font-bold whitespace-pre-line group-hover:text-slate-900 transition-colors">
               {title}
             </h3>
-            <p className="text-[#555c56] text-xs sm:text-sm leading-relaxed line-clamp-2">
+            <p className="text-slate-500 text-xs sm:text-sm leading-relaxed line-clamp-2 mt-1">
               {description}
             </p>
           </div>
 
           {/* Illustration - Right side */}
-          <div className="card-illustration">
-            <div className="w-[90px] h-[90px] sm:w-[110px] sm:h-[110px] lg:w-[130px] lg:h-[130px] flex-shrink-0 overflow-hidden">
-              {illustration}
-            </div>
+          <div className="w-[80px] h-[80px] sm:w-[95px] sm:h-[95px] flex-shrink-0 select-none pointer-events-none overflow-hidden transition-transform duration-500 group-hover:scale-105 group-hover:rotate-1">
+            {illustration}
           </div>
         </div>
       </motion.div>
@@ -137,26 +139,30 @@ interface StatCardProps {
 function StatCard({ title, value, subtitle, icon, trend }: StatCardProps) {
   return (
     <motion.div
-      whileHover={{ y: -2 }}
-      className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm"
+      whileHover={{ 
+        y: -4, 
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.03)" 
+      }}
+      transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+      className="group relative overflow-hidden bg-white rounded-2xl border border-slate-100 p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] transition-all duration-300 hover:border-[var(--primary-200)]"
     >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-slate-500">{title}</p>
-          <p className="text-2xl font-bold text-slate-900 mt-1">{value}</p>
+          <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase leading-none">{title}</p>
+          <p className="text-3xl font-extrabold text-slate-800 mt-2 tracking-tight leading-none">{value}</p>
           {subtitle && (
-            <p className="text-xs text-slate-400 mt-1">{subtitle}</p>
+            <p className="text-xs text-slate-400 font-medium mt-2">{subtitle}</p>
           )}
         </div>
-        <div className="p-2 bg-[var(--primary-50)] rounded-lg text-[var(--primary-500)]">
+        <div className="p-3 bg-[var(--primary-50)]/70 text-[var(--primary-600)] rounded-xl border border-[var(--primary-100)]/30 transition-all duration-300 group-hover:scale-105 group-hover:bg-[var(--primary-100)]/45">
           {icon}
         </div>
       </div>
       {trend && (
-        <div className={`flex items-center gap-1 mt-3 text-xs ${
-          trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-600' : 'text-slate-500'
+        <div className={`flex items-center gap-1 mt-4 text-xs font-medium ${
+          trend === 'up' ? 'text-emerald-600' : trend === 'down' ? 'text-rose-600' : 'text-slate-500'
         }`}>
-          <TrendingUp className="w-3 h-3" />
+          <TrendingUp className="w-3.5 h-3.5" />
           <span>{trend === 'up' ? 'Improving' : trend === 'down' ? 'Declining' : 'Stable'}</span>
         </div>
       )}
@@ -175,21 +181,25 @@ interface QuickActionProps {
 
 function QuickAction({ title, description, icon, href, color }: QuickActionProps) {
   return (
-    <Link href={href}>
+    <Link href={href} className="group">
       <motion.div
-        whileHover={{ scale: 1.02 }}
+        whileHover={{ 
+          y: -4, 
+          boxShadow: "0 15px 20px -8px rgba(0, 0, 0, 0.05)" 
+        }}
         whileTap={{ scale: 0.98 }}
-        className="flex items-center gap-4 p-6 rounded-2xl border border-slate-200 hover:border-[var(--primary-500)] hover:shadow-md transition-all bg-white"
+        transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+        className="flex items-center gap-4 p-5 rounded-2xl border border-slate-100 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.02)] hover:border-[var(--primary-200)] hover:bg-slate-50/40 transition-all duration-300 bg-white"
       >
         <div 
-          className="w-12 h-12 rounded-xl flex items-center justify-center"
+          className="w-12 h-12 rounded-xl flex items-center justify-center border border-black/5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-transform duration-300 group-hover:scale-105"
           style={{ backgroundColor: color }}
         >
           {icon}
         </div>
-        <div className="flex-1">
-          <h4 className="font-semibold text-slate-900">{title}</h4>
-          <p className="text-sm text-slate-500">{description}</p>
+        <div className="flex-1 min-w-0">
+          <h4 className="font-semibold text-slate-800 text-sm sm:text-base leading-snug">{title}</h4>
+          <p className="text-xs sm:text-sm text-slate-400 mt-0.5 truncate">{description}</p>
         </div>
       </motion.div>
     </Link>
@@ -211,14 +221,14 @@ export default function DashboardPage() {
       title: "Text to speech\nLearning Hub",
       description:
         "Turn text into sound. Sit back, listen & watch the words light up as you learn.",
-      bgColor: "rgba(60, 131, 80, 0.25)",
+      bgColor: "rgba(60, 131, 80, 0.12)",
       illustration: <ReadingALetterRafiki />,
       href: "/text-to-speech",
     },
     {
       title: "Reading Assistant",
       description: "Study with confidence as words are simplified into bits",
-      bgColor: "rgba(137, 207, 240, 0.35)",
+      bgColor: "rgba(137, 207, 240, 0.15)",
       illustration: <BookLoverCuate />,
       href: "/reading-assistant",
     },
@@ -226,14 +236,14 @@ export default function DashboardPage() {
       title: "StudyBuddy",
       description:
         "A smart assistant that helps you understand your notes better. Just upload!",
-      bgColor: "rgba(126, 87, 194, 0.25)",
+      bgColor: "rgba(126, 87, 194, 0.10)",
       illustration: <StudyBuddy />,
       href: "/chat-assistant",
     },
     {
       title: "Speech to Text\n(Writing Assistant)",
       description: "Writing made easier! Just speak and we will do the writing",
-      bgColor: "rgba(197, 63, 63, 0.25)",
+      bgColor: "rgba(197, 63, 63, 0.10)",
       illustration: <WritingAssistant />,
       href: "/writing-assistant",
     },
@@ -243,14 +253,14 @@ export default function DashboardPage() {
     {
       title: "Create Flashcards",
       description: "Generate from your notes",
-      icon: <BookOpen className="w-6 h-6 text-white" />,
+      icon: <BookOpen className="w-5 h-5 text-white" />,
       href: "/flashcards",
       color: "#3C8350",
     },
     {
       title: "Take a Quiz",
       description: "Test your knowledge",
-      icon: <Target className="w-6 h-6 text-white" />,
+      icon: <Target className="w-5 h-5 text-white" />,
       href: "/quizzes",
       color: "#df7361",
     },
@@ -259,14 +269,14 @@ export default function DashboardPage() {
   const isLoading = statsLoading || streakLoading || masteryLoading || decksLoading || quizzesLoading;
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full gap-8 pb-12">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8 pt-8">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-[#272a28] text-2xl sm:text-3xl tracking-tight font-bold">
+      <div className="flex items-center justify-between pt-6 border-b border-slate-100 pb-6">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-slate-800 text-2xl sm:text-3xl tracking-tight font-extrabold leading-tight">
             Hello, {user?.first_name || user?.name?.split(" ")[0] || "Student"}!
           </h1>
-          <p className="text-[#555c56] text-sm sm:text-base">
+          <p className="text-slate-500 text-xs sm:text-sm font-medium">
             Ready to continue your learning journey?
           </p>
         </div>
@@ -275,13 +285,13 @@ export default function DashboardPage() {
 
       {/* Stats Overview */}
       {isLoading ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-28 bg-slate-100 animate-pulse rounded-xl" />
+            <div key={i} className="h-28 bg-slate-50 border border-slate-100 animate-pulse rounded-2xl" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
             title="Study Streak"
             value={studyStreak?.current_streak || 0}
@@ -310,37 +320,37 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Topic Mastery Section - Requirement 19.3 */}
+      {/* Topic Mastery Section */}
       {!masteryLoading && topicMastery && topicMastery.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-[#272a28] mb-4">Topic Mastery</h2>
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
+          <h2 className="text-lg font-semibold text-slate-800 tracking-tight mb-4">Topic Mastery</h2>
+          <div className="bg-white/70 backdrop-blur-md rounded-2xl border border-slate-100 p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {topicMastery.map((topic, index) => (
-                <div key={index} className="flex flex-col gap-2">
+                <div key={index} className="flex flex-col gap-2 p-3 rounded-xl hover:bg-slate-50/50 border border-transparent hover:border-slate-100/50 transition-all duration-300">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Brain className="w-4 h-4 text-[var(--primary-500)]" />
-                      <span className="font-medium text-slate-900 text-sm">{topic.topic}</span>
+                      <Brain className="w-4 h-4 text-[var(--primary-600)]" />
+                      <span className="font-semibold text-slate-700 text-sm truncate max-w-[150px]">{topic.topic}</span>
                     </div>
-                    <span className="text-sm font-semibold text-slate-700">
+                    <span className="text-xs font-bold text-slate-500">
                       {Math.round(topic.mastery_score)}%
                     </span>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-2">
+                  <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                     <div 
-                      className={`h-2 rounded-full transition-all ${
+                      className={`h-1.5 rounded-full transition-all duration-500 ${
                         topic.mastery_score >= 80 
-                          ? 'bg-green-500' 
+                          ? 'bg-emerald-500' 
                           : topic.mastery_score >= 60 
-                          ? 'bg-[var(--primary-500)]' 
+                          ? 'bg-[var(--primary-600)]' 
                           : 'bg-amber-500'
                       }`}
                       style={{ width: `${Math.min(100, Math.max(0, topic.mastery_score))}%` }}
                     />
                   </div>
                   {topic.last_reviewed && (
-                    <p className="text-xs text-slate-400">
+                    <p className="text-[10px] text-slate-400 font-medium">
                       Last reviewed: {new Date(topic.last_reviewed).toLocaleDateString()}
                     </p>
                   )}
@@ -352,10 +362,10 @@ export default function DashboardPage() {
       )}
 
       {/* Main Content Area */}
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Section - Tools */}
         <div className="flex-1">
-          <h2 className="text-lg font-semibold text-[#272a28] mb-4">Learning Tools</h2>
+          <h2 className="text-lg font-semibold text-slate-800 tracking-tight mb-4">Learning Tools</h2>
           <motion.div
             initial="hidden"
             animate="visible"
@@ -378,7 +388,7 @@ export default function DashboardPage() {
                   visible: {
                     opacity: 1,
                     y: 0,
-                    transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+                    transition: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] },
                   },
                 }}
               >
@@ -395,24 +405,24 @@ export default function DashboardPage() {
         </div>
 
         {/* Right Panel */}
-        <div className="w-full md:w-[280px] lg:w-[320px] flex flex-col gap-6 mt-4">
+        <div className="w-full lg:w-[320px] flex flex-col gap-8">
           {/* Actions Section */}
           <div className="flex flex-col gap-4">
-            <h2 className="text-lg font-semibold text-[#272a28]">Quick Actions</h2>
+            <h2 className="text-lg font-semibold text-slate-800 tracking-tight">Quick Actions</h2>
             {quickActions.map((action) => (
               <QuickAction key={action.title} {...action} />
             ))}
           </div>
 
           {/* Recent Section */}
-          <div className="flex flex-col gap-6 bg-white rounded-2xl border border-slate-200 p-6">
+          <div className="flex flex-col gap-6 bg-white/70 backdrop-blur-md rounded-2xl border border-slate-100 p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
             {/* Recent Flashcards */}
             <div className="flex flex-col gap-3">
-              <h2 className="text-lg font-semibold text-[#272a28]">Recent Flashcards</h2>
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Recent Flashcards</h3>
               {decksLoading ? (
                 <div className="space-y-3">
                   {[...Array(3)].map((_, i) => (
-                    <div key={i} className="h-12 bg-slate-100 animate-pulse rounded-lg" />
+                    <div key={i} className="h-12 bg-slate-50 border border-slate-100 animate-pulse rounded-xl" />
                   ))}
                 </div>
               ) : flashcardDecks && flashcardDecks.length > 0 ? (
@@ -421,14 +431,14 @@ export default function DashboardPage() {
                     <Link 
                       key={deck.id} 
                       href={`/flashcards?deck=${deck.id}`}
-                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors"
+                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50/50 border border-transparent hover:border-slate-100/50 transition-all duration-300 group"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-[var(--primary-100)] flex items-center justify-center">
-                        <BookOpen className="w-5 h-5 text-[var(--primary-500)]" />
+                      <div className="w-10 h-10 rounded-xl bg-[var(--primary-50)] border border-[var(--primary-100)]/30 flex items-center justify-center transition-colors group-hover:bg-[var(--primary-100)]/40">
+                        <BookOpen className="w-5 h-5 text-[var(--primary-600)]" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-slate-900 truncate">{deck.title}</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="font-semibold text-slate-700 text-sm truncate leading-snug group-hover:text-slate-800">{deck.title}</p>
+                        <p className="text-[11px] text-slate-400 font-medium mt-0.5">
                           {deck.cards?.length || 0} cards
                         </p>
                       </div>
@@ -437,11 +447,11 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <div className="text-center py-6 text-slate-400">
-                  <BookOpen className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <BookOpen className="w-8 h-8 mx-auto mb-2 opacity-30" />
                   <p className="text-sm">No flashcards yet</p>
                   <Link 
                     href="/flashcards" 
-                    className="text-[var(--primary-500)] text-sm hover:underline mt-1 inline-block"
+                    className="text-[var(--primary-600)] text-sm font-semibold hover:underline mt-1 inline-block"
                   >
                     Create your first deck
                   </Link>
@@ -451,11 +461,11 @@ export default function DashboardPage() {
 
             {/* Recent Quizzes */}
             <div className="flex flex-col gap-3">
-              <h2 className="text-lg font-semibold text-[#272a28]">Recent Quizzes</h2>
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Recent Quizzes</h3>
               {quizzesLoading ? (
                 <div className="space-y-3">
                   {[...Array(3)].map((_, i) => (
-                    <div key={i} className="h-12 bg-slate-100 animate-pulse rounded-lg" />
+                    <div key={i} className="h-12 bg-slate-50 border border-slate-100 animate-pulse rounded-xl" />
                   ))}
                 </div>
               ) : quizzes && quizzes.length > 0 ? (
@@ -464,14 +474,14 @@ export default function DashboardPage() {
                     <Link 
                       key={quiz.id} 
                       href={`/quizzes?quiz=${quiz.id}`}
-                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors"
+                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50/50 border border-transparent hover:border-slate-100/50 transition-all duration-300 group"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-[#df7361]/10 flex items-center justify-center">
-                        <Target className="w-5 h-5 text-[#df7361]" />
+                      <div className="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100/30 flex items-center justify-center transition-colors group-hover:bg-rose-100/40">
+                        <Target className="w-5 h-5 text-rose-600" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-slate-900 truncate">{quiz.title}</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="font-semibold text-slate-700 text-sm truncate leading-snug group-hover:text-slate-800">{quiz.title}</p>
+                        <p className="text-[11px] text-slate-400 font-medium mt-0.5">
                           {quiz.questions?.length || 0} questions
                         </p>
                       </div>
@@ -480,11 +490,11 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <div className="text-center py-6 text-slate-400">
-                  <Target className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <Target className="w-8 h-8 mx-auto mb-2 opacity-30" />
                   <p className="text-sm">No quizzes yet</p>
                   <Link 
                     href="/quizzes" 
-                    className="text-[var(--primary-500)] text-sm hover:underline mt-1 inline-block"
+                    className="text-[var(--primary-600)] text-sm font-semibold hover:underline mt-1 inline-block"
                   >
                     Create your first quiz
                   </Link>
@@ -494,7 +504,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Learning Goals */}
-          <div className="bg-white rounded-xl border border-slate-200 p-4">
+          <div className="bg-white/70 backdrop-blur-md rounded-2xl border border-slate-100 p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
             <GoalsManager />
           </div>
         </div>

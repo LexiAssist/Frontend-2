@@ -446,15 +446,15 @@ export default function ChatAssistantPage() {
   };
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-4rem)] w-full max-w-6xl flex-col lg:h-screen overflow-hidden">
+    <div className="mx-auto flex h-[calc(100vh-4rem)] w-full max-w-6xl flex-col lg:h-screen overflow-hidden pb-12">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 pb-4 pt-2 lg:pb-6 lg:pt-4 shrink-0">
+      <div className="flex items-center justify-between pt-6 border-b border-slate-100 pb-6 mb-8 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-[var(--primary-500)] flex items-center justify-center text-white">
-            <Bot className="h-6 w-6" />
+            <div className="h-10 w-10 rounded-xl bg-[var(--primary-500)] flex items-center justify-center text-white shadow-md shadow-[var(--primary-500)]/15">
+              <Bot className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-slate-900">LexiAssist Chat</h1>
+            <h1 className="text-slate-900 text-lg font-extrabold tracking-tight leading-tight">LexiAssist Chat</h1>
             <p className="text-sm text-slate-500">
               {isLoadingConversation ? (
                 <span className="flex items-center gap-2">
@@ -475,26 +475,28 @@ export default function ChatAssistantPage() {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => setUseStreaming(!useStreaming)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
-              useStreaming
-                ? 'bg-[var(--primary-500)] text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
-            title="Toggle streaming responses"
-          >
-            <MessageSquare className="w-3 h-3 inline mr-1" />
-            {useStreaming ? 'Streaming' : 'Standard'}
-          </button>
-          {messages.length > 0 && (
             <button
-              onClick={startNewChat}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+              onClick={() => setUseStreaming(!useStreaming)}
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all shadow-sm ${
+                useStreaming
+                  ? 'bg-[var(--primary-500)] text-white shadow-[var(--primary-500)]/10'
+                  : 'bg-white text-slate-655 border border-slate-200 hover:bg-slate-50'
+              }`}
+              title="Toggle streaming responses"
             >
-              <Plus className="h-4 w-4" />
-              New Chat
+              <MessageSquare className="w-3.5 h-3.5 inline mr-1.5" />
+              {useStreaming ? 'Streaming' : 'Standard'}
             </button>
+          {messages.length > 0 && (
+              <motion.button
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={startNewChat}
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all shadow-sm"
+              >
+                <Plus className="h-4 w-4" />
+                New Chat
+              </motion.button>
           )}
           <FeatureHeader />
         </div>
@@ -504,29 +506,29 @@ export default function ChatAssistantPage() {
         /* Empty State */
         <section className="flex flex-1 flex-col items-center justify-center pb-12 overflow-y-auto">
           <div className="flex w-full max-w-[720px] flex-col items-center">
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="h-16 w-16 rounded-2xl bg-gradient-to-br from-[var(--primary-400)] to-[var(--primary-600)] flex items-center justify-center text-white shadow-lg mb-6"
-            >
-              <Sparkles className="h-8 w-8" />
-            </motion.div>
+              <motion.div 
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+                className="h-16 w-16 rounded-2xl bg-gradient-to-br from-[var(--primary-400)] to-[var(--primary-600)] flex items-center justify-center text-white shadow-lg shadow-[var(--primary-500)]/15 mb-6"
+              >
+                <Sparkles className="h-8 w-8" />
+              </motion.div>
 
-            <h1 className="text-center text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
-              Good afternoon, {user?.first_name || user?.name?.split(' ')[0] || 'Student'}
-            </h1>
-            <p className="mt-2 text-center text-lg text-slate-500">
-              What would you like to learn today?
-            </p>
+              <h1 className="text-center text-3xl sm:text-4xl tracking-tight font-extrabold text-slate-900 leading-tight">
+                Hello, {user?.first_name || user?.name?.split(' ')[0] || 'Student'}
+              </h1>
+              <p className="mt-3 text-center text-base sm:text-lg text-slate-500 font-medium">
+                What would you like to study today?
+              </p>
 
             <div className="mt-8 w-full">
-              <div className="relative rounded-2xl border border-slate-200 bg-white shadow-sm focus-within:shadow-md focus-within:border-slate-300 transition-all">
+              <div className="relative rounded-2xl border border-slate-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.015)] focus-within:shadow-md focus-within:border-slate-200 transition-all">
                 <textarea
                   value={prompt}
                   onChange={(event) => setPrompt(event.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="min-h-[140px] w-full resize-none rounded-t-2xl border-0 bg-transparent px-5 py-4 text-base text-slate-900 outline-none placeholder:text-slate-400"
+                  className="min-h-[140px] w-full resize-none rounded-t-2xl border-0 bg-transparent px-6 py-5 text-base text-slate-900 outline-none placeholder:text-slate-450 focus:ring-0"
                   placeholder="Ask me anything about your studies…"
                 />
 
@@ -537,15 +539,17 @@ export default function ChatAssistantPage() {
                     <AttachmentButton />
                   </div>
 
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     type="button"
                     onClick={handleSubmit}
                     disabled={!prompt.trim() || chatMutation.isPending}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--primary-500)] text-white text-sm font-medium hover:bg-[var(--primary-600)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--primary-500)] text-white text-sm font-bold hover:bg-[var(--primary-600)] shadow-md shadow-[var(--primary-500)]/15 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     <span>Send</span>
                     <ArrowUp className="h-4 w-4" />
-                  </button>
+                  </motion.button>
                 </div>
               </div>
 
@@ -560,7 +564,7 @@ export default function ChatAssistantPage() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.05 }}
-                      className="group flex min-h-[96px] flex-col justify-between rounded-xl border border-slate-200 bg-white p-4 text-left transition hover:border-[var(--primary-300)] hover:shadow-sm"
+                      className="group flex min-h-[96px] flex-col justify-between rounded-2xl border border-slate-100 bg-white p-5 text-left transition-all duration-300 hover:border-[var(--primary-300)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.015)] hover:scale-[1.01] active:scale-[0.99]"
                     >
                       <p className="text-sm leading-relaxed text-slate-700 group-hover:text-slate-900 transition-colors">{card.title}</p>
                       <div className="flex items-center justify-between">
@@ -598,10 +602,10 @@ export default function ChatAssistantPage() {
                   
                   <div className={`max-w-[85%] sm:max-w-[75%] ${message.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-1`}>
                     <div
-                      className={`px-4 py-3 leading-relaxed text-[15px] ${
+                      className={`px-5 py-3.5 leading-relaxed text-[15px] ${
                         message.role === 'user'
-                          ? 'bg-slate-900 text-white rounded-2xl rounded-tr-md'
-                          : 'bg-white border border-slate-200 text-slate-800 rounded-2xl rounded-tl-md shadow-sm'
+                          ? 'bg-slate-900 text-white rounded-2xl rounded-tr-md shadow-[0_2px_12px_rgba(0,0,0,0.05)]'
+                          : 'bg-slate-50/70 border border-slate-100 text-slate-800 rounded-2xl rounded-tl-md shadow-[0_1px_3px_rgba(0,0,0,0.01)]'
                       }`}
                     >
                       <p className="whitespace-pre-wrap">{message.content}</p>

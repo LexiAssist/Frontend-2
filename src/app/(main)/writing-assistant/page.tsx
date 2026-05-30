@@ -507,19 +507,21 @@ export default function WritingAssistantPage() {
       className="min-h-[calc(100vh-6rem)] pb-12"
     >
       {/* Header */}
-      <div className="flex items-center justify-between gap-4 mb-8 pt-2">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">Writing Assistant</h1>
-          <p className="text-slate-500 mt-1 text-sm">Dictate, refine, and structure your thoughts effortlessly.</p>
+      <div className="flex items-center justify-between pt-6 border-b border-slate-100 pb-6 mb-8">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-slate-900 text-2xl sm:text-3xl tracking-tight font-extrabold leading-tight">Writing Assistant</h1>
+          <p className="text-slate-500 text-xs sm:text-sm font-medium">Dictate, refine, and structure your thoughts effortlessly.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
             onClick={handleViewHistory}
-            className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-sm"
+            className="hidden sm:flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all shadow-sm active:scale-[0.98]"
           >
             <History className="w-4 h-4" />
             History
-          </button>
+          </motion.button>
           <FeatureHeader />
         </div>
       </div>
@@ -528,9 +530,9 @@ export default function WritingAssistantPage() {
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         {/* Main Editor */}
         <div className="flex-1 min-w-0">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.015)] overflow-hidden">
             {/* Toolbar */}
-            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-slate-100 bg-white">
+            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-slate-100 bg-white/50 backdrop-blur-sm">
               <div className="flex items-center gap-3">
                 {isRecording ? (
                   <div className="flex items-center gap-4 bg-gradient-to-r from-red-50 to-orange-50 px-5 py-2 rounded-full border border-red-100 shadow-sm">
@@ -544,7 +546,7 @@ export default function WritingAssistantPage() {
                     <div className="h-6 w-px bg-red-200 mx-1"></div>
                     <button 
                       onClick={stopRecording} 
-                      className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-1.5 font-semibold text-sm rounded-full flex items-center gap-2 transition-all shadow-md active:scale-95"
+                      className="bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white px-4.5 py-1.5 font-bold text-xs sm:text-sm rounded-full flex items-center gap-2 transition-all shadow-md active:scale-95 hover:shadow-lg"
                     >
                       <Square className="w-3.5 h-3.5 fill-current" />
                       Stop
@@ -553,7 +555,7 @@ export default function WritingAssistantPage() {
                 ) : (
                   <button 
                     onClick={startRecording}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#3D6E4E] text-white text-sm font-semibold hover:bg-[#345e43] transition-all shadow-md active:scale-95"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--primary-500)] text-white text-sm font-bold hover:bg-[var(--primary-600)] transition-all shadow-md shadow-[var(--primary-500)]/15 active:scale-95 hover:shadow-lg"
                   >
                     <Mic className="w-4 h-4" />
                     Start Recording
@@ -564,7 +566,7 @@ export default function WritingAssistantPage() {
               <button 
                 onClick={handleGenerateNotes}
                 disabled={!transcript || isProcessing}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-955 hover:bg-slate-900 text-white text-sm font-semibold hover:shadow-md transition-all shadow-sm disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 shadow-black/10"
               >
                 {isProcessing ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -639,8 +641,8 @@ export default function WritingAssistantPage() {
 
         {/* Tools Panel - Desktop always visible, Mobile drawer */}
         <div className={`
-          fixed inset-y-0 right-0 z-40 w-80 bg-white border-l border-slate-200 shadow-xl transform transition-transform duration-300 ease-out
-          lg:static lg:transform-none lg:shadow-none lg:w-80 lg:rounded-2xl lg:border lg:border-slate-200 lg:h-fit
+          fixed inset-y-0 right-0 z-40 w-80 bg-white/95 backdrop-blur-md border-l border-slate-100 shadow-2xl transform transition-transform duration-300 ease-out
+          lg:static lg:transform-none lg:shadow-none lg:w-80 lg:rounded-2xl lg:border lg:border-slate-150/40 lg:shadow-[0_8px_30px_rgb(0,0,0,0.015)] lg:h-fit lg:bg-white/90
           ${toolsOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
         `}>
           <div className="h-full lg:h-auto flex flex-col p-6">
@@ -657,7 +659,7 @@ export default function WritingAssistantPage() {
 
             {/* Desktop panel header */}
             <div className="hidden lg:flex items-center gap-2 mb-6">
-              <div className="p-2 rounded-lg bg-[#E8F3EA] text-[#3D6E4E]">
+              <div className="p-2 rounded-xl bg-[var(--primary-50)] text-[var(--primary-700)] border border-[var(--primary-100)]/30">
                 <Type className="w-4 h-4" />
               </div>
               <h2 className="text-lg font-semibold text-slate-900">Formatting Tools</h2>
@@ -673,7 +675,7 @@ export default function WritingAssistantPage() {
                     setShowSpacingDropdown(false);
                     setShowTintPicker(false);
                   }}
-                  className="flex items-center justify-between w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-700 hover:border-slate-300 transition-colors"
+                  className="flex items-center justify-between w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 hover:border-slate-300 transition-colors shadow-sm focus:ring-0 focus:outline-none"
                 >
                   <span className="capitalize">{fontChoice === 'opendyslexic' ? 'OpenDyslexic' : fontChoice === 'roboto' ? 'Roboto' : 'System Default'}</span>
                   <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showFontDropdown ? 'rotate-180' : ''}`} />
