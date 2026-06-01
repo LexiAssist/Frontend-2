@@ -108,6 +108,7 @@ export const useAuthStore = create<AuthState>()(
             refreshToken: response.refresh_token,
             tokenExpiresAt: response.expires_at,
             user: response.user,
+            isAuthenticated: true,
           });
           
           return true;
@@ -185,6 +186,7 @@ export async function initializeAuth() {
         wsClient.disconnect();
         store.setUser(null);
       }
+      // If refresh succeeded, isAuthenticated is already set to true
     } else {
       // No tokens, user is not authenticated
       wsClient.disconnect();

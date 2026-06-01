@@ -67,7 +67,7 @@ const nextConfig: NextConfig = {
                   "style-src 'self' 'unsafe-inline'",
                   "img-src 'self' data: blob: https:",
                   "font-src 'self' data:",
-                  "connect-src 'self' https://*.lexiassist.com wss://*.lexiassist.com https://*.lexiassist.app wss://*.lexiassist.app https://*.onrender.com wss://*.onrender.com",
+                  "connect-src 'self' https://*.lexiassist.app wss://*.lexiassist.app",
                   "media-src 'self' blob: data:",
                   "object-src 'none'",
                   "base-uri 'self'",

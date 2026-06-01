@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+RUN npm ci
 
 # ==========================================
 # STAGE 2: Builder
@@ -19,8 +19,21 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the Next.js app
-# Set MOCK_MODE to false by default for production builds
+# Declare build arguments
+ARG NEXT_PUBLIC_API_GATEWAY_URL
+ARG NEXT_PUBLIC_API_PROXY_URL
+ARG NEXT_PUBLIC_AI_PROXY_URL
+ARG NEXT_PUBLIC_WS_URL
+ARG NEXT_PUBLIC_INGESTION_URL
+ARG NEXT_PUBLIC_USE_MOCK_API=false
+
+# Make them available as env vars during build
+ENV NEXT_PUBLIC_API_GATEWAY_URL=$NEXT_PUBLIC_API_GATEWAY_URL
+ENV NEXT_PUBLIC_API_PROXY_URL=$NEXT_PUBLIC_API_PROXY_URL
+ENV NEXT_PUBLIC_AI_PROXY_URL=$NEXT_PUBLIC_AI_PROXY_URL
+ENV NEXT_PUBLIC_WS_URL=$NEXT_PUBLIC_WS_URL
+ENV NEXT_PUBLIC_INGESTION_URL=$NEXT_PUBLIC_INGESTION_URL
+ENV NEXT_PUBLIC_USE_MOCK_API=$NEXT_PUBLIC_USE_MOCK_API
 ENV NEXT_PUBLIC_MOCK_MODE=false
 ENV NEXT_TELEMETRY_DISABLED=1
 

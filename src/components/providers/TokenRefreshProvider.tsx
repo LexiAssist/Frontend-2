@@ -2,18 +2,23 @@
 
 import { useEffect, useRef } from 'react';
 import { initTokenRefresh } from '@/services/api';
+import { initializeAuth } from '@/store/authStore';
 
 /**
  * TokenRefreshProvider
  * 
- * Initializes automatic token refresh on app startup.
- * This ensures tokens are refreshed proactively before they expire,
- * preventing 401 errors during API calls.
+ * Initializes auth state and automatic token refresh on app startup.
+ * This validates the session on page reload and ensures tokens are
+ * refreshed proactively before they expire.
  */
 export function TokenRefreshProvider({ children }: { children: React.ReactNode }) {
   const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
+    // Validate auth state on app startup (page reload)
+    // This sets isLoading=false after checking tokens
+    initializeAuth();
+
     // Initialize token refresh system
     cleanupRef.current = initTokenRefresh();
     
