@@ -32,22 +32,22 @@
   }
 
   :root {
-    /* Primary Green Palette */
-    --primary-50: #ecf3ee;
-    --primary-100: #c3d9c9;
-    --primary-200: #a5c6af;
-    --primary-300: #7cac8a;
-    --primary-400: #639c73;
-    --primary-500: #3c8350;
-    --primary-600: #377749;
-    --primary-700: #2b5d39;
-    --primary-800: #21482c;
-    --primary-900: #193722;
+    /* Primary Green Palette - Custom Branding Alignment */
+    --primary-50: #EAF4EE;
+    --primary-100: #C3D9C9;
+    --primary-200: #A1C4AB;
+    --primary-300: #6B9E7C;
+    --primary-400: #548C65;
+    --primary-500: #3C8350;
+    --primary-600: #346A47;
+    --primary-700: #2D5A3D;
+    --primary-800: #22452E;
+    --primary-900: #172E1F;
     
     /* Background colors */
-    --bg-primary: #3c8350;
-    --bg-primary-hover: #377749;
-    --bg-light: #ecf3ee;
+    --bg-primary: #3C8350;
+    --bg-primary-hover: #2D5A3D;
+    --bg-light: #EAF4EE;
     --bg-page: #F8FAF9;
     
     /* shadcn/ui theme variables */
@@ -185,21 +185,13 @@
 
 /* Animation utilities for Radix UI */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 @keyframes zoom-in {
@@ -327,73 +319,43 @@
 
 /* Skeleton loading pulse */
 @keyframes skeleton-pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 /* iOS-style slide in from right (for modals/drawers) */
 @keyframes slide-in-right {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }
 
 @keyframes slide-out-right {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100%);
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
 }
 
 /* iOS-style slide in from bottom (for sheets) */
 @keyframes slide-in-bottom {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 @keyframes slide-out-bottom {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(100%);
-  }
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
 }
 
 /* Bounce animation for attention */
 @keyframes bounce-subtle {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 /* Shake animation for errors */
 @keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  10%, 30%, 50%, 70%, 90% {
-    transform: translateX(-4px);
-  }
-  20%, 40%, 60%, 80% {
-    transform: translateX(4px);
-  }
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
 }
 
 /* Animation utility classes */
