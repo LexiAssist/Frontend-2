@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -7,12 +6,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/useAuth";
-import { APIError, handleAPIError } from "@/lib/errorHandler";
+import { APIError } from "@/lib/errorHandler";
 import { Icon } from "@/components/Icon";
 import Logo from "@/components/auth/Logo";
 import Image from "next/image";
-import { Sparkles, Compass } from "lucide-react";
-import { motion } from "framer-motion";
 
 const registerSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
@@ -38,7 +35,7 @@ function SocialLoginButton({
   return (
     <button
       type="button"
-      className="flex items-center justify-center gap-3 h-12 px-4 sm:px-6 bg-white border border-[#E8E8E8] rounded-xl hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm active:scale-[0.985] transition-all duration-300 text-sm font-semibold text-[#555555]"
+      className="flex items-center justify-center gap-3 h-12 px-4 sm:px-6 bg-white border border-[#D0D5DD] rounded-full hover:bg-gray-50 hover:border-[#377749]/30 hover:shadow-sm active:scale-[0.98] transition-all duration-200 text-sm font-medium text-[#374151]"
     >
       <div className="relative w-5 h-5 shrink-0">
         <Image
@@ -79,162 +76,116 @@ export default function RegisterPage() {
     try {
       await registerUser(data);
     } catch (err) {
-      const error = handleAPIError(err);
-      if (error.statusCode === 409) {
-        setServerError("An account with this email already exists.");
-      } else if (error.statusCode === 400) {
-        setServerError(error.message || "Please check your details and try again.");
+      if (err instanceof APIError) {
+        if (err.statusCode === 409) {
+          setServerError("An account with this email already exists.");
+        } else if (err.statusCode === 400) {
+          setServerError(err.message || "Please check your details and try again.");
+        } else {
+          setServerError(err.message || "Registration failed. Please try again.");
+        }
       } else {
-        setServerError(error.message || "Registration failed. Please try again.");
+        setServerError("Registration failed. Please try again.");
       }
     }
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-[#FAFAFA]">
+    <div className="min-h-screen w-full flex bg-white">
       {/* Left Panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#EAF4EE] via-[#E4EFE8] to-[#C3D9C9] relative overflow-hidden items-center justify-center p-12">
-        {/* Decorative Grid Mesh */}
-        <div 
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, #3D7A52 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-          }}
-        />
-        {/* Glow Ambient Orbs */}
-        <div className="absolute -top-40 -left-40 w-[480px] h-[480px] rounded-full bg-[#6B9E7C]/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-40 -right-40 w-[480px] h-[480px] rounded-full bg-[#3D7A52]/15 blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col justify-between w-full h-full">
-          <div className="self-start">
-            <Logo />
-          </div>
-          
-          {/* Cupertino Showcase Widget */}
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            className="relative bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl p-8 shadow-[0_20px_50px_rgba(45,90,61,0.06)] max-w-md mx-auto"
-          >
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-12 h-12 rounded-2xl bg-[#EAF4EE] text-[#3D7A52] flex items-center justify-center shadow-inner">
-                <Compass className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div>
-                <h3 className="font-extrabold text-[#111111] text-lg tracking-tight">Personalized Quizzes</h3>
-                <p className="text-xs font-bold text-[#6B9E7C] uppercase tracking-wider">Materials to Knowledge</p>
-              </div>
-            </div>
-            
-            <p className="text-slate-600 text-sm font-semibold leading-relaxed mb-6">
-              "LexiAssist automatically generates interactive quizzes and smart flashcards from my uploads. It has completely transformed the way I study and retain key information!"
-            </p>
-            
-            <div className="flex items-center gap-3 border-t border-slate-100 pt-5">
-              <div className="w-10 h-10 rounded-full bg-[#3C8350] text-white flex items-center justify-center font-bold text-sm shadow-sm border border-white/40">
-                JC
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-800">Jessica Chen</h4>
-                <p className="text-xs font-semibold text-slate-400">Medical Student</p>
-              </div>
-              <div className="ml-auto flex items-center gap-1 bg-[#FFF9E6] border border-amber-200/50 px-2 py-0.5 rounded-md text-[10px] font-bold text-amber-700 uppercase">
-                <Sparkles className="w-3 h-3" />
-                <span>Feature</span>
-              </div>
-            </div>
-          </motion.div>
-          
-          <div className="max-w-sm pl-4">
-            <p className="text-[11px] font-bold text-[#3D7A52] uppercase tracking-widest">Designed for Excellence</p>
-            <p className="text-sm font-medium text-[#555555] mt-1.5 leading-relaxed">Elevate your learning potential with tailored interactive tools.</p>
-          </div>
+      <div className="hidden lg:flex lg:w-1/2 bg-[#ECF3EE] relative items-center justify-center p-8">
+        <div className="absolute top-8 left-8 z-10">
+          <Logo />
+        </div>
+        <div className="absolute inset-0">
+          <Image
+            src="/images/Girl out the window.svg"
+            alt="Girl looking out window"
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
       </div>
 
       {/* Right Panel */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="w-full max-w-md bg-white border border-slate-100 shadow-[0_15px_40px_rgba(0,0,0,0.02)] rounded-3xl p-6 sm:p-10 space-y-6 sm:space-y-8">
+        <div className="w-full max-w-120 space-y-6 sm:space-y-8">
           <div className="lg:hidden flex justify-center">
             <Logo />
           </div>
 
           <div className="space-y-2 text-center lg:text-left">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-[-0.035em] text-[#111111]">
+            <h1 className="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] text-[#272A28]">
               Welcome to LexiAssist!
             </h1>
-            <p className="text-sm font-semibold text-slate-400 leading-relaxed">Register your account to get started</p>
+            <p className="text-[#555C56]">Register your account</p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              {/* First Name */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="first_name"
-                  className="block text-[11px] font-bold uppercase tracking-wider text-slate-400"
-                >
-                  First Name
-                </label>
-                <input
-                  id="first_name"
-                  type="text"
-                  {...register("first_name")}
-                  placeholder="First name"
-                  className="w-full h-12 px-4 bg-slate-50/50 hover:bg-slate-50/20 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-[#3D7A52]/10 focus:border-[#3D7A52] focus:bg-white transition-all duration-300 text-slate-800 font-medium"
-                />
-                {errors.first_name && (
-                  <p className="text-xs font-semibold text-red-600 mt-1">{errors.first_name.message}</p>
-                )}
-              </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* First Name */}
+            <div className="space-y-2">
+              <label
+                htmlFor="first_name"
+                className="block text-sm font-medium text-[#101928]"
+              >
+                First Name
+              </label>
+              <input
+                id="first_name"
+                type="text"
+                {...register("first_name")}
+                placeholder="Enter your first name"
+                className="w-full h-12 px-4 rounded-full border border-[#D0D5DD] bg-white text-base text-[#101928] placeholder:text-[#98A2B3] focus:outline-none focus:ring-2 focus:ring-[#377749]/20 focus:border-[#377749] transition-all duration-200 md:text-sm"
+              />
+              {errors.first_name && (
+                <p className="text-sm text-red-600 mt-1">{errors.first_name.message}</p>
+              )}
+            </div>
 
-              {/* Last Name */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="last_name"
-                  className="block text-[11px] font-bold uppercase tracking-wider text-slate-400"
-                >
-                  Last Name
-                </label>
-                <input
-                  id="last_name"
-                  type="text"
-                  {...register("last_name")}
-                  placeholder="Last name"
-                  className="w-full h-12 px-4 bg-slate-50/50 hover:bg-slate-50/20 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-[#3D7A52]/10 focus:border-[#3D7A52] focus:bg-white transition-all duration-300 text-slate-800 font-medium"
-                />
-                {errors.last_name && (
-                  <p className="text-xs font-semibold text-red-600 mt-1">{errors.last_name.message}</p>
-                )}
-              </div>
+            {/* Last Name */}
+            <div className="space-y-2">
+              <label
+                htmlFor="last_name"
+                className="block text-sm font-medium text-[#101928]"
+              >
+                Last Name
+              </label>
+              <input
+                id="last_name"
+                type="text"
+                {...register("last_name")}
+                placeholder="Enter your last name"
+                className="w-full h-12 px-4 rounded-full border border-[#D0D5DD] bg-white text-base text-[#101928] placeholder:text-[#98A2B3] focus:outline-none focus:ring-2 focus:ring-[#377749]/20 focus:border-[#377749] transition-all duration-200 md:text-sm"
+              />
+              {errors.last_name && (
+                <p className="text-sm text-red-600 mt-1">{errors.last_name.message}</p>
+              )}
             </div>
 
             {/* Email */}
             <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="block text-[11px] font-bold uppercase tracking-wider text-slate-400"
+                className="block text-sm font-medium text-[#101928]"
               >
-                Email Address
+                Email
               </label>
               <input
                 id="email"
                 type="email"
                 {...register("email")}
-                placeholder="Enter your email address"
-                className={`w-full h-12 px-4 bg-slate-50/50 hover:bg-slate-50/20 border ${
-                  errors.email ? "border-red-400" : "border-slate-200"
-                } rounded-xl text-sm focus:outline-none focus:ring-4 ${
+                placeholder="Enter your email"
+                className={`w-full h-12 px-4 rounded-full border ${
+                  errors.email ? "border-red-500" : "border-[#D0D5DD]"
+                } bg-white text-base text-[#101928] placeholder:text-[#98A2B3] focus:outline-none focus:ring-2 ${
                   errors.email
-                    ? "focus:ring-red-500/10 focus:border-red-500"
-                    : "focus:ring-[#3D7A52]/10 focus:border-[#3D7A52]"
-                } focus:bg-white transition-all duration-300 text-slate-800 font-medium`}
+                    ? "focus:ring-red-500/20 focus:border-red-500"
+                    : "focus:ring-[#377749]/20 focus:border-[#377749]"
+                } transition-all duration-200 md:text-sm`}
               />
               {errors.email && (
-                <p className="text-xs font-semibold text-red-600 mt-1">{errors.email.message}</p>
+                <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>
               )}
             </div>
 
@@ -242,7 +193,7 @@ export default function RegisterPage() {
             <div className="space-y-2">
               <label
                 htmlFor="password"
-                className="block text-[11px] font-bold uppercase tracking-wider text-slate-400"
+                className="block text-sm font-medium text-[#101928]"
               >
                 Password
               </label>
@@ -251,19 +202,19 @@ export default function RegisterPage() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  placeholder="Create a secure password"
-                  className={`w-full h-12 px-4 pr-12 bg-slate-50/50 hover:bg-slate-50/20 border ${
-                    errors.password ? "border-red-400" : "border-slate-200"
-                  } rounded-xl text-sm focus:outline-none focus:ring-4 ${
+                  placeholder="Create a password (min 8 characters)"
+                  className={`w-full h-12 px-4 pr-12 rounded-full border ${
+                    errors.password ? "border-red-500" : "border-[#D0D5DD]"
+                  } bg-white text-base text-[#101928] placeholder:text-[#98A2B3] focus:outline-none focus:ring-2 ${
                     errors.password
-                      ? "focus:ring-red-500/10 focus:border-red-500"
-                      : "focus:ring-[#3D7A52]/10 focus:border-[#3D7A52]"
-                  } focus:bg-white transition-all duration-300 text-slate-800 font-medium`}
+                      ? "focus:ring-red-500/20 focus:border-red-500"
+                      : "focus:ring-[#377749]/20 focus:border-[#377749]"
+                  } transition-all duration-200 md:text-sm`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-700 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-[#667185] hover:text-[#101928] transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
@@ -274,4 +225,65 @@ export default function RegisterPage() {
                 </button>
               </div>
               {errors.password ? (
-                <p className="text-xs font-semibold text-red-600 mt-1">{errors.
+                <p className="text-sm text-red-600 mt-1">{errors.password.message}</p>
+              ) : (
+                passwordValue.length > 0 && passwordValue.length < 8 && (
+                  <p className="text-sm text-amber-600">
+                    Password must be at least 8 characters
+                  </p>
+                )
+              )}
+            </div>
+
+            {/* Server Error */}
+            {serverError && (
+              <div className="text-sm text-red-600 bg-red-50 px-4 py-3 rounded-xl">
+                {serverError}
+              </div>
+            )}
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full h-12 bg-[#377749] hover:bg-[#2d6340] active:bg-[#265538] text-white font-semibold rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-sm hover:shadow-md active:scale-[0.98]"
+            >
+              {isSubmitting ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                "Sign Up"
+              )}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[#E5E7EB]" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="px-4 bg-white text-sm text-[#5D655F]">or</span>
+            </div>
+          </div>
+
+          {/* Social */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <SocialLoginButton provider="google" label="Google" />
+            <SocialLoginButton provider="linkedin" label="LinkedIn" />
+          </div>
+
+          {/* Login Link */}
+          <div className="flex items-center justify-center gap-2 text-sm">
+            <span className="text-[#555C56]">Already have an account?</span>
+            <Link
+              href="/login"
+              className="font-semibold text-[#3C8350] hover:text-[#377749] transition-colors"
+            >
+              Sign in
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
