@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
@@ -58,29 +58,29 @@ function PageHeader({ title }: { title: string }) {
 
 function Banner() {
   return (
-    <div className="relative overflow-hidden rounded-lg bg-[#ff9a05] px-4 py-6 sm:px-8 sm:py-8 lg:px-12 lg:py-10">
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#FFFBEB] via-[#FEF3C7] to-[#FDE68A] border border-[#F5A623]/25 px-6 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-10 shadow-[0_8px_30px_rgba(245,166,35,0.08)]">
       <div
-        className="absolute inset-0 opacity-25"
+        className="absolute inset-0 opacity-[0.15]"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 22px 22px, rgba(198,122,0,0.55) 0 20px, transparent 21px)",
-          backgroundSize: "52px 52px",
+            "radial-gradient(circle at 22px 22px, #F5A623 0 20px, transparent 21px)",
+          backgroundSize: "44px 44px",
         }}
       />
-      <div className="relative z-10 flex min-h-[160px] sm:min-h-[180px] lg:min-h-[206px] flex-col sm:flex-row items-center justify-center gap-4 sm:gap-[32px] lg:gap-[52px]">
-        <div className="relative h-[120px] w-[160px] sm:h-[140px] sm:w-[180px] lg:h-[206px] lg:w-[225px] shrink-0">
+      <div className="relative z-10 flex min-h-[160px] sm:min-h-[180px] lg:min-h-[206px] flex-col sm:flex-row items-center justify-center gap-6 sm:gap-[40px] lg:gap-[52px]">
+        <div className="relative h-[120px] w-[160px] sm:h-[140px] sm:w-[180px] lg:h-[206px] lg:w-[225px] shrink-0 hover:scale-105 transition-transform duration-500 ease-out">
           <Image
             src="/images/flashcard.jpg"
             alt="Flashcards illustration"
             fill
-            className="object-contain mix-blend-screen"
+            className="object-contain mix-blend-multiply"
           />
         </div>
         <div className="w-full max-w-[498px] text-center sm:text-left">
-          <h2 className="text-[20px] sm:text-[24px] lg:text-[28px] font-semibold leading-[1.2] tracking-[-0.02em] text-[#272A28]">
+          <h2 className="text-[24px] sm:text-[28px] lg:text-[32px] font-bold leading-[1.15] tracking-[-0.03em] text-[#2C200C]">
             Flashcards
           </h2>
-          <p className="pt-3 sm:pt-5 lg:pt-7 text-[16px] sm:text-[18px] lg:text-[20px] leading-[1.3] sm:leading-[1.2] tracking-[-0.02em] text-[#555C56]">
+          <p className="pt-3 sm:pt-4 lg:pt-5 text-[15px] sm:text-[17px] lg:text-[19px] leading-[1.45] tracking-[-0.015em] text-[#63481B]/90 font-medium">
             Learn more effectively with AI-generated flashcards. Upload a document or enter text to get started.
           </p>
         </div>
@@ -92,36 +92,38 @@ function Banner() {
 function UploadDropzone({ onChooseFile, onTextInput }: { onChooseFile: () => void; onTextInput: () => void }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
+      exit={{ opacity: 0, y: -12 }}
       transition={transitionProps}
-      className="space-y-4"
+      className="space-y-5"
     >
       <button
         type="button"
         onClick={onChooseFile}
-        className="flex min-h-[220px] sm:min-h-[260px] lg:min-h-[286px] w-full flex-col items-center justify-center rounded-lg border border-dashed border-[var(--primary-500)] bg-[rgba(60,131,80,0.18)] px-4 sm:px-8 text-center touch-target hover:bg-[rgba(60,131,80,0.25)] transition-colors"
+        className="flex min-h-[220px] sm:min-h-[260px] lg:min-h-[286px] w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#F5A623]/35 bg-[#FAF9F5]/80 px-4 sm:px-8 text-center hover:bg-[#FAF9F5] hover:scale-[1.01] active:scale-[0.995] shadow-sm hover:shadow-md transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
       >
-        <div className="flex h-[56px] w-[56px] sm:h-[68px] sm:w-[68px] lg:h-[78px] lg:w-[78px] items-center justify-center rounded-full bg-[var(--primary-500)]">
-          <CloudUpload className="h-7 w-7 sm:h-9 sm:w-9 lg:h-10 lg:w-10 text-[var(--primary-50)]" />
+        <div className="flex h-[56px] w-[56px] sm:h-[68px] sm:w-[68px] lg:h-[78px] lg:w-[78px] items-center justify-center rounded-full bg-gradient-to-br from-[#F5A623] to-[#E28704] shadow-[0_8px_20px_-4px_rgba(245,166,35,0.3)]">
+          <CloudUpload className="h-7 w-7 sm:h-9 sm:w-9 lg:h-10 lg:w-10 text-white" />
         </div>
-        <p className="pt-3 sm:pt-4 text-[18px] sm:text-[20px] lg:text-[24px] font-semibold leading-[1.2] tracking-[-0.02em] text-[var(--primary-500)]">
+        <p className="pt-5 sm:pt-6 text-[18px] sm:text-[20px] lg:text-[22px] font-bold leading-[1.2] tracking-[-0.025em] text-[#8F5500]">
           Click to upload or drag and drop
         </p>
-        <p className="pt-2 text-[14px] sm:text-[16px] lg:text-[18px] leading-[1.45] text-black/60">
+        <p className="pt-2 text-[13px] sm:text-[15px] lg:text-[16px] font-medium leading-[1.45] text-[#8F5500]/60">
           PDF, DOC, TXT (max 25MB)
         </p>
       </button>
       
-      <div className="text-center">
-        <span className="text-sm text-gray-500">or</span>
+      <div className="flex items-center justify-center gap-3">
+        <div className="h-[1px] w-8 bg-slate-200" />
+        <span className="text-sm font-semibold tracking-wide text-slate-400 uppercase">or</span>
+        <div className="h-[1px] w-8 bg-slate-200" />
       </div>
       
       <button
         type="button"
         onClick={onTextInput}
-        className="w-full py-4 px-6 rounded-lg border border-[var(--primary-500)] text-[var(--primary-500)] font-medium hover:bg-[var(--primary-50)] transition-colors"
+        className="w-full py-4 px-6 rounded-xl border border-[#F5A623]/40 text-[#D97706] font-semibold hover:bg-[#FFFBEB] active:scale-[0.99] transition-all duration-200"
       >
         Type or paste your content
       </button>
@@ -142,39 +144,41 @@ function TextInputState({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
+      exit={{ opacity: 0, y: -12 }}
       transition={transitionProps}
       className="w-full"
     >
-      <p className="text-[16px] sm:text-[20px] font-medium leading-[1.2] tracking-[-0.02em] text-[#6b6f6c] mb-4">
-        Enter your content
-      </p>
-      
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Paste your study material here..."
-        className="w-full min-h-[200px] p-4 rounded-lg border border-gray-200 focus:border-[var(--primary-500)] focus:ring-1 focus:ring-[var(--primary-500)] outline-none resize-none"
-      />
-      
-      <div className="flex gap-3 mt-4">
-        <Button
-          onClick={onCancel}
-          variant="outline"
-          className="flex-1"
-        >
-          Cancel
-        </Button>
-        <Button
-          onClick={() => onSubmit(text)}
-          isLoading={isLoading}
-          disabled={!text.trim()}
-          className="flex-1"
-        >
-          Generate Flashcards
-        </Button>
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] p-6 sm:p-8">
+        <p className="text-[16px] sm:text-[18px] font-semibold tracking-[-0.015em] text-slate-800 mb-4">
+          Enter your content
+        </p>
+        
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Paste your study material here..."
+          className="w-full min-h-[220px] p-4 rounded-xl border border-slate-200 focus:border-[#F5A623] focus:ring-[3px] focus:ring-[#F5A623]/10 transition-all outline-none resize-none text-[15px] leading-relaxed text-slate-700"
+        />
+        
+        <div className="flex gap-4 mt-6">
+          <Button
+            onClick={onCancel}
+            variant="outline"
+            className="flex-1 rounded-xl py-3 text-sm font-semibold"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => onSubmit(text)}
+            isLoading={isLoading}
+            disabled={!text.trim()}
+            className="flex-1 rounded-xl py-3 text-sm font-semibold bg-[var(--primary-500)] hover:bg-[var(--primary-600)]"
+          >
+            Generate Flashcards
+          </Button>
+        </div>
       </div>
     </motion.div>
   );
@@ -193,49 +197,51 @@ function ReadyState({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
+      exit={{ opacity: 0, y: -12 }}
       transition={transitionProps}
       className="w-full"
     >
-      <p className="text-[16px] sm:text-[20px] font-medium leading-[1.2] tracking-[-0.02em] text-[#6b6f6c]">
-        Document uploaded
-      </p>
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] p-6 sm:p-8 max-w-md">
+        <p className="text-[15px] sm:text-[17px] font-semibold text-slate-800 tracking-[-0.015em]">
+          Document uploaded
+        </p>
 
-      <div className="mt-4 sm:mt-5 flex h-[56px] sm:h-[64px] w-full max-w-[380px] items-center justify-between rounded-lg bg-[#efefef] px-4 sm:px-6">
-        <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-          <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center text-[var(--primary-500)] shrink-0">
-            <FileText className="h-6 w-6 sm:h-8 sm:w-8 fill-current stroke-[1.6]" />
+        <div className="mt-4 flex h-[60px] sm:h-[68px] w-full items-center justify-between rounded-xl bg-[#FAF9F5] border border-[#F5A623]/15 px-4">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="flex h-10 w-10 items-center justify-center text-[#D97706] bg-[#FFFBEB] rounded-lg shrink-0">
+              <FileText className="h-6 w-6 stroke-[2]" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[14px] sm:text-[15px] font-semibold text-slate-700 truncate">
+                {document.name}
+              </p>
+              <p className="text-[11px] font-bold text-amber-600 uppercase tracking-wider">
+                {document.extension}
+              </p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <p className="text-[14px] sm:text-[16px] font-medium text-[#555C56] truncate">
-              {document.name}
-            </p>
-            <p className="pt-0.5 text-[12px] sm:text-[14px] text-[#888d89]">
-              {document.extension}
-            </p>
-          </div>
+
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isLoading}
+            className="rounded-full p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition disabled:opacity-50 shrink-0"
+            aria-label="Remove selected document"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={onCancel}
-          disabled={isLoading}
-          className="rounded-full p-2 text-black transition hover:bg-white disabled:opacity-50 touch-target shrink-0"
-          aria-label="Remove selected document"
+        <Button
+          onClick={onSubmit}
+          isLoading={isLoading}
+          className="mt-6 w-full h-[48px] sm:h-[50px] rounded-xl text-[14px] sm:text-[15px] font-bold shadow-[0_4px_12px_rgba(60,131,80,0.15)] bg-[var(--primary-500)] hover:bg-[var(--primary-600)]"
         >
-          <X className="h-5 w-5" />
-        </button>
+          Generate Flashcards
+        </Button>
       </div>
-
-      <Button
-        onClick={onSubmit}
-        isLoading={isLoading}
-        className="mt-5 sm:mt-6 w-full max-w-[380px] h-[48px] sm:h-[52px] rounded-full text-[14px] sm:text-[16px] font-semibold"
-      >
-        Generate Flashcards
-      </Button>
     </motion.div>
   );
 }
@@ -244,16 +250,16 @@ function SideCard({ side }: { side: "left" | "right" }) {
   return (
     <div
       className={[
-        "hidden h-[214px] w-[180px] rounded-md bg-[#6ca378] px-5 py-6 lg:block lg:h-[258px] lg:w-[180px]",
+        "hidden h-[214px] w-[180px] rounded-2xl bg-gradient-to-br from-[#EAF4EE] to-[#D5EADF] border border-[#6B9E7C]/20 px-5 py-6 lg:block lg:h-[258px] lg:w-[180px] opacity-40 shadow-sm",
         side === "left"
-          ? "origin-right scale-[0.98]"
-          : "origin-left scale-[0.98]",
+          ? "origin-right scale-[0.96]"
+          : "origin-left scale-[0.96]",
       ].join(" ")}
     >
       <div className="flex h-full flex-col justify-center gap-5">
-        <div className="h-4 w-[85%] rounded-full bg-[rgba(236,243,238,0.85)]" />
-        <div className="h-4 w-[65%] rounded-full bg-[rgba(236,243,238,0.85)]" />
-        <div className="h-4 w-[85%] rounded-full bg-[rgba(236,243,238,0.85)]" />
+        <div className="h-3 w-[85%] rounded-full bg-[#6B9E7C]/30" />
+        <div className="h-3 w-[65%] rounded-full bg-[#6B9E7C]/30" />
+        <div className="h-3 w-[80%] rounded-full bg-[#6B9E7C]/30" />
       </div>
     </div>
   );
@@ -282,9 +288,9 @@ function GeneratedState({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
+      exit={{ opacity: 0, y: -12 }}
       transition={transitionProps}
       className="pt-4 sm:pt-8"
     >
@@ -293,37 +299,44 @@ function GeneratedState({
 
         <div 
           onClick={onFlip}
-          className="relative h-[280px] w-[210px] sm:h-[321px] sm:w-[241px] lg:h-[360px] lg:w-[290px] overflow-hidden rounded-md bg-[var(--primary-500)] px-4 sm:px-6 py-5 sm:py-7 text-white shadow-sm cursor-pointer transition-transform hover:scale-[1.02]"
+          className={`relative h-[280px] w-[210px] sm:h-[321px] sm:w-[241px] lg:h-[360px] lg:w-[290px] overflow-hidden rounded-3xl px-6 py-6 text-white cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.03] active:scale-[0.975] ${
+            isFlipped 
+              ? 'bg-gradient-to-br from-[#D97706] via-[#C26B05] to-[#8C4B00] border border-amber-400/20 shadow-[0_25px_60px_-12px_rgba(217,119,6,0.35)]' 
+              : 'bg-gradient-to-br from-[#3C8350] via-[#2F653E] to-[#1F452A] border border-emerald-400/20 shadow-[0_25px_60px_-12px_rgba(60,131,80,0.35)]'
+          }`}
         >
-          <div className="relative z-10 flex h-full flex-col items-center text-center">
-            <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-[3px] border-white">
-              <HelpCircle className="h-6 w-6 sm:h-7 sm:w-7" />
+          <div className="relative z-10 flex h-full flex-col items-center justify-between text-center py-2">
+            <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-white/60 bg-white/10 backdrop-blur-sm shadow-inner">
+              <HelpCircle className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <p className="pt-2 text-[16px] sm:text-[18px] font-semibold">{currentIndex + 1}/{flashcards.length}</p>
-            <p className="max-w-[180px] sm:max-w-[205px] pt-5 sm:pt-7 text-[16px] sm:text-[18px] lg:text-[20px] font-semibold leading-[1.35]">
-              {isFlipped ? currentCard.back : currentCard.front}
-            </p>
+            
+            <div className="space-y-4 my-auto">
+              <p className="text-[12px] uppercase font-black tracking-widest text-white/50">{isFlipped ? 'Answer' : 'Question'}</p>
+              <p className="max-w-[190px] sm:max-w-[210px] text-[16px] sm:text-[18px] lg:text-[20px] font-bold leading-[1.35] tracking-tight">
+                {isFlipped ? currentCard.back : currentCard.front}
+              </p>
+            </div>
 
-            <div className="mt-auto pb-2 sm:pb-3">
-              <span className="text-sm text-white/70">
-                {isFlipped ? 'Click to see question' : 'Click to reveal answer'}
+            <div className="pb-1">
+              <span className="text-[12px] font-bold uppercase tracking-wider text-white/60 bg-white/15 px-3 py-1 rounded-full backdrop-blur-md">
+                {currentIndex + 1} of {flashcards.length}
               </span>
             </div>
           </div>
 
-          <div className="absolute bottom-0 left-[-12%] h-[60px] sm:h-[86px] w-[60%] rounded-[50%] bg-[rgba(236,243,238,0.22)]" />
-          <div className="absolute bottom-0 right-[-14%] h-[60px] sm:h-[86px] w-[60%] rounded-[50%] bg-[rgba(25,55,34,0.45)]" />
+          <div className="absolute -bottom-6 -left-6 h-32 w-32 rounded-full bg-white/10 blur-xl pointer-events-none" />
+          <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-black/15 blur-lg pointer-events-none" />
         </div>
 
         <SideCard side="right" />
       </div>
 
-      <div className="flex items-center justify-center gap-6 sm:gap-10 pt-8 sm:pt-14">
+      <div className="flex items-center justify-center gap-6 sm:gap-8 pt-8 sm:pt-10">
         <button
           type="button"
           onClick={onPrev}
           disabled={currentIndex === 0}
-          className="flex h-11 w-11 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[var(--primary-500)] text-[var(--primary-500)] transition hover:bg-[var(--primary-50)] touch-target disabled:opacity-50"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:bg-slate-50 active:scale-90 disabled:opacity-30 disabled:pointer-events-none"
           aria-label="Previous flashcard"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -332,7 +345,7 @@ function GeneratedState({
           type="button"
           onClick={onNext}
           disabled={currentIndex === flashcards.length - 1}
-          className="flex h-11 w-11 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[var(--primary-500)] text-[var(--primary-500)] transition hover:bg-[var(--primary-50)] touch-target disabled:opacity-50"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:bg-slate-50 active:scale-90 disabled:opacity-30 disabled:pointer-events-none"
           aria-label="Next flashcard"
         >
           <ArrowRight className="h-5 w-5" />
@@ -340,11 +353,11 @@ function GeneratedState({
       </div>
 
       {/* Save Deck Button */}
-      <div className="flex justify-center pt-6">
+      <div className="flex justify-center pt-8">
         <Button
           onClick={onSaveDeck}
           isLoading={isSaving}
-          className="px-8"
+          className="px-8 rounded-xl font-bold py-3 bg-[var(--primary-500)] hover:bg-[var(--primary-600)] shadow-md shadow-emerald-800/10 active:scale-[0.98] transition-all"
         >
           Save Flashcard Deck
         </Button>

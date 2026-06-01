@@ -163,30 +163,37 @@ export default function Sidebar() {
         href={link.href}
         onClick={onClick}
         className={[
-          'flex items-center gap-3 rounded-xl transition-all duration-200 ease-ios',
-          'active:scale-97 touch-target',
+          'flex items-center gap-3 rounded-xl transition-all duration-300 ease-out',
+          'active:scale-[0.98] touch-target',
           nested ? 'mx-2 px-4 py-3 text-[13px]' : 'mx-0 px-4 py-3.5 text-sm',
           active
-            ? 'bg-white text-[var(--primary-500)] shadow-sm'
+            ? mobile
+              ? 'bg-white text-[var(--primary-500)] shadow-lg shadow-black/15 scale-[1.01]'
+              : 'bg-white text-[var(--primary-500)] shadow-lg shadow-black/10 scale-[1.01]'
             : mobile
-              ? 'text-slate-800 hover:bg-slate-100 active:bg-slate-200'
-              : 'text-white hover:bg-white/12 active:bg-white/20',
+              ? 'text-white/70 hover:text-white hover:bg-white/8 active:bg-white/12'
+              : 'text-white/70 hover:text-white hover:bg-white/8 active:bg-white/12',
         ].join(' ')}
       >
-        <Icon className={nested ? 'h-4 w-4 flex-shrink-0' : 'h-5 w-5 flex-shrink-0'} />
+        <Icon className={nested ? 'h-4 w-4 flex-shrink-0 opacity-80' : 'h-5 w-5 flex-shrink-0 opacity-80'} />
         <span className={`${active ? 'font-semibold' : 'font-medium'} truncate`}>{link.label}</span>
-        {active && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--primary-500)]" />}
+        {active && (
+          <div className={[
+            'ml-auto w-1.5 h-1.5 rounded-full',
+            mobile ? 'bg-[var(--primary-600)]' : 'bg-[var(--primary-600)]'
+          ].join(' ')} />
+        )}
       </Link>
     );
   };
 
   const profileBlock = (
-    <div className="w-full rounded-2xl px-4 py-3 text-white">
+    <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-4 text-white shadow-xl shadow-black/10 backdrop-blur-sm">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
-          <Avatar className="h-10 w-10 border border-white/25 flex-shrink-0">
+          <Avatar className="h-10 w-10 border border-white/20 flex-shrink-0 transition-transform duration-300 hover:scale-105">
             <AvatarImage src={user?.avatar} alt={avatarName} />
-            <AvatarFallback className="bg-[#f3dcc2] text-[var(--primary-700)] font-semibold text-sm">
+            <AvatarFallback className="bg-white/10 text-white font-semibold text-sm border border-white/15">
               {avatarName
                 .split(' ')
                 .map((part) => part[0])
@@ -195,14 +202,14 @@ export default function Sidebar() {
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold leading-none">{avatarName}</p>
-            <p className="truncate pt-1 text-xs text-white/75">{avatarEmail}</p>
+            <p className="truncate text-sm font-semibold leading-none text-white">{avatarName}</p>
+            <p className="truncate pt-1.5 text-xs text-white/60 font-medium leading-none">{avatarEmail}</p>
           </div>
         </div>
         <button
           onClick={handleLogout}
           disabled={logoutMutation.isPending}
-          className="rounded-full p-2.5 text-white/80 transition-all duration-200 hover:bg-white/10 hover:text-white active:scale-95 touch-target flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="rounded-xl p-2.5 text-white/70 transition-all duration-300 hover:bg-white/10 hover:text-white active:scale-95 touch-target flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed border border-white/5 hover:border-white/10"
           aria-label="Log out"
         >
           <DoorOpen className="h-4 w-4" />
@@ -213,8 +220,7 @@ export default function Sidebar() {
 
   const desktopSidebar = (
     <aside
-      className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-[300px] flex-col px-4 py-6 text-white"
-      style={{ backgroundColor: sidebarGreen }}
+      className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-[300px] flex-col px-5 py-8 text-white bg-gradient-to-b from-[var(--primary-500)] to-[var(--primary-700)] border-r border-white/10 shadow-xl"
     >
       <div className="px-2 pb-6">
         <div className="text-white">
@@ -223,23 +229,25 @@ export default function Sidebar() {
       </div>
 
       <div className="flex-1 overflow-y-auto px-2 scrollbar-hide">
-        <nav className="space-y-4">
+        <nav className="space-y-5">
           <div className="space-y-3">
             <Link
               href="/dashboard"
               className={[
-                'flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium transition-all duration-200 touch-target',
-                isActive('/dashboard') ? 'bg-white text-[var(--primary-500)] shadow-sm' : 'text-white hover:bg-white/12 active:bg-white/20',
+                'flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium transition-all duration-300 ease-out touch-target',
+                isActive('/dashboard')
+                  ? 'bg-white text-[var(--primary-500)] shadow-lg shadow-black/10 scale-[1.01]'
+                  : 'text-white/80 hover:text-white hover:bg-white/8 active:bg-white/12',
               ].join(' ')}
             >
               <Home className="h-5 w-5" />
               <span>Dashboard</span>
             </Link>
-            <div className="mx-2 h-px bg-white/20" />
+            <div className="mx-2 h-px bg-white/10" />
           </div>
 
           <div className="space-y-2">
-            <p className="px-4 text-[11px] font-medium text-white/55">Section Title</p>
+            <p className="px-4 text-[10px] font-semibold uppercase tracking-[0.08em] text-white/40">Tools</p>
             {mainLinks.map((link) => (
               <NavItem key={link.href} link={link} active={isActive(link.href)} />
             ))}
@@ -249,9 +257,9 @@ export default function Sidebar() {
             <button
               type="button"
               onClick={() => setStudyBuddyOpen((open) => !open)}
-              className="flex w-full items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium text-white transition-all duration-200 hover:bg-white/12 active:bg-white/20 touch-target"
+              className="flex w-full items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-white/8 active:bg-white/12 touch-target"
             >
-              <Sparkles className="h-5 w-5" />
+              <Sparkles className="h-5 w-5 opacity-80" />
               <span className="flex-1 text-left">StudyBuddy</span>
               <motion.div
                 animate={{ rotate: studyBuddyOpen ? 180 : 0 }}
@@ -295,7 +303,7 @@ export default function Sidebar() {
   const mobileDrawer = (
     <>
       {/* Mobile Header */}
-      <header className="fixed left-0 right-0 top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-md lg:hidden">
+      <header className="fixed left-0 right-0 top-0 z-30 border-b border-slate-200/85 bg-white/80 backdrop-blur-md lg:hidden">
         <div className="flex h-16 items-center justify-between px-4">
           <motion.button
             type="button"
@@ -312,7 +320,7 @@ export default function Sidebar() {
           {/* Profile Avatar - replaces duplicate settings button since FeatureHeader has settings */}
           <Link 
             href="/settings"
-            className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--primary-100)] text-[var(--primary-600)] transition-colors active:bg-[var(--primary-200)] touch-target overflow-hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--primary-50)] text-[var(--primary-700)] border border-[var(--primary-100)] transition-colors active:bg-[var(--primary-100)] touch-target overflow-hidden"
             aria-label="Profile"
           >
             <span className="text-sm font-semibold">
@@ -344,18 +352,18 @@ export default function Sidebar() {
             animate="visible"
             exit="exit"
             variants={slideInVariants}
-            className="fixed inset-y-0 left-0 z-50 flex w-[300px] flex-col bg-white shadow-2xl lg:hidden"
+            className="fixed inset-y-0 left-0 z-50 flex w-[300px] flex-col bg-gradient-to-b from-[var(--primary-500)] to-[var(--primary-700)] text-white shadow-2xl lg:hidden border-r border-white/10"
           >
             {/* Drawer Header */}
-            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-4">
-              <div className="text-[var(--primary-500)]">
+            <div className="flex items-center justify-between border-b border-white/10 px-4 py-4 bg-transparent text-white">
+              <div className="text-white">
                 <LexiAssistMark />
               </div>
               <motion.button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
                 whileTap={{ scale: 0.95 }}
-                className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-slate-700 transition-colors active:bg-slate-100 touch-target"
+                className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 text-white/80 hover:bg-white/10 active:bg-white/15 touch-target"
                 aria-label="Close navigation"
               >
                 <X className="h-5 w-5" />
@@ -376,19 +384,21 @@ export default function Sidebar() {
                     href="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
                     className={[
-                      'flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium transition-all duration-200 touch-target',
-                      isActive('/dashboard') ? 'bg-[var(--primary-500)] text-white shadow-md shadow-[var(--primary-500)]/25' : 'text-slate-800 hover:bg-slate-100 active:bg-slate-200',
+                      'flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium transition-all duration-300 ease-out touch-target',
+                      isActive('/dashboard')
+                        ? 'bg-white text-[var(--primary-500)] shadow-lg shadow-black/15 scale-[1.01]'
+                        : 'text-white/70 hover:text-white hover:bg-white/8 active:bg-white/12',
                     ].join(' ')}
                   >
                     <Home className="h-5 w-5" />
                     <span>Dashboard</span>
                   </Link>
-                  <div className="h-px bg-slate-200" />
+                  <div className="h-px bg-white/10" />
                 </motion.div>
 
                 {/* Main Tools */}
                 <motion.div variants={staggerItem} className="space-y-2">
-                  <p className="px-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">Tools</p>
+                  <p className="px-4 text-[10px] font-semibold uppercase tracking-[0.08em] text-white/40">Tools</p>
                   {mainLinks.map((link, idx) => (
                     <motion.div
                       key={link.href}
@@ -399,7 +409,6 @@ export default function Sidebar() {
                       <NavItem 
                         link={link} 
                         active={isActive(link.href)} 
-                        mobile 
                         onClick={() => setMobileMenuOpen(false)}
                       />
                     </motion.div>
@@ -411,9 +420,9 @@ export default function Sidebar() {
                   <button
                     type="button"
                     onClick={() => setStudyBuddyOpen((open) => !open)}
-                    className="flex w-full items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium text-slate-800 transition-all duration-200 hover:bg-slate-100 active:bg-slate-200 touch-target"
+                    className="flex w-full items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-white/8 active:bg-white/12 touch-target"
                   >
-                    <Sparkles className="h-5 w-5" />
+                    <Sparkles className="h-5 w-5 opacity-80" />
                     <span className="flex-1 text-left">StudyBuddy</span>
                     <motion.div
                       animate={{ rotate: studyBuddyOpen ? 180 : 0 }}
@@ -438,7 +447,6 @@ export default function Sidebar() {
                               link={link}
                               active={isActive(link.href)}
                               nested
-                              mobile
                               onClick={() => setMobileMenuOpen(false)}
                             />
                           ))}
@@ -455,26 +463,18 @@ export default function Sidebar() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ 
-              delay: 0.3, 
-              type: 'spring' as const,
-              stiffness: 400,
-              damping: 35,
-            }}
-              className="mx-4 mb-6 rounded-2xl px-2 py-3 text-white"
-              style={{ backgroundColor: primaryGreen }}
+                delay: 0.3, 
+                type: 'spring' as const,
+                stiffness: 400,
+                damping: 35,
+              }}
+              className="mx-4 mb-6"
             >
               {profileBlock}
             </motion.div>
           </motion.aside>
         )}
       </AnimatePresence>
-    </>
-  );
-
-  return (
-    <>
-      {desktopSidebar}
-      {mobileDrawer}
     </>
   );
 }

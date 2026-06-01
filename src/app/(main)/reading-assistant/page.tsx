@@ -365,10 +365,10 @@ export default function ReadingAssistantPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-6rem)]">
+    <div className="min-h-[calc(100vh-6rem)] pb-12">
       <div className="flex items-center justify-between mb-8 pt-2">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">Reading Assistant</h1>
+          <h1 className="text-slate-900 text-2xl sm:text-3xl tracking-tight font-extrabold leading-tight">Reading Assistant</h1>
           <p className="text-slate-500 mt-1 text-sm">Simplify complex text and learn at your own pace.</p>
         </div>
         <div className="flex items-center gap-3">
@@ -393,7 +393,7 @@ export default function ReadingAssistantPage() {
           transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
           className="w-full space-y-6"
         >
-          <Card className="relative overflow-hidden border-0 rounded-2xl bg-[#EBF3FF] shadow-sm p-0">
+          <Card className="relative overflow-hidden border border-slate-100 rounded-2xl bg-gradient-to-br from-[#EBF3FF] via-white to-slate-50/50 shadow-[0_8px_30px_rgb(0,0,0,0.015)] p-0">
             <div className="absolute inset-0 opacity-[0.08]">
               <svg className="w-full h-full" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
                 <defs><pattern id="p1" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
@@ -403,33 +403,33 @@ export default function ReadingAssistantPage() {
                 <rect width="100%" height="100%" fill="url(#p1)"/>
               </svg>
             </div>
-            <CardContent className="relative z-10 p-8 flex items-center gap-8">
+            <CardContent className="relative z-10 p-8 sm:p-10 flex flex-col sm:flex-row items-center gap-6 sm:gap-8 text-center sm:text-left">
               <div className="flex-shrink-0 w-40 h-32" aria-hidden="true">
                 <BookLoverCuate />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-slate-900 mb-2">Reading Assistant</h2>
-                <p className="text-[15px] text-slate-600 leading-relaxed">Study with confidence as words are simplified into easy-to-understand bits</p>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Reading Assistant</h2>
+                <p className="text-sm sm:text-base text-slate-500 leading-relaxed font-medium">Study with confidence as words are simplified into easy-to-understand bits</p>
               </div>
             </CardContent>
           </Card>
 
           <motion.button
             whileTap={{ scale: 0.99 }}
-            className="rounded-2xl border-2 border-dashed border-[#D4E8D7] bg-[#F0F7F1] transition-all duration-200 cursor-pointer flex flex-col items-center justify-center py-12 sm:py-16 px-4 sm:px-6 gap-4 sm:gap-5 hover:border-[#3D6E4E] hover:bg-[#E8F3EA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3D6E4E] focus-visible:ring-offset-2"
+            className="rounded-2xl border-2 border-dashed border-slate-200 bg-white transition-all duration-300 cursor-pointer flex flex-col items-center justify-center py-14 sm:py-20 px-6 sm:px-10 gap-5 w-full shadow-[0_4px_20px_rgba(0,0,0,0.01)] focus-visible:outline-none"
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) handleFileUpload(f); }}
             onClick={() => fileRef.current?.click()}
             type="button"
           >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#3D6E4E] flex items-center justify-center text-white shadow-lg transition-transform duration-200 active:scale-95">
+            <div className="w-16 h-16 rounded-2xl bg-[var(--primary-500)] flex items-center justify-center text-white shadow-lg shadow-[var(--primary-500)]/15 transition-transform duration-300 hover:scale-105 active:scale-95">
               <Upload className="h-6 w-6 sm:h-7 sm:w-7" />
             </div>
             <div className="text-center">
-              <p className="text-[#3D6E4E] font-semibold text-sm sm:text-base">
+              <p className="text-slate-800 font-bold text-base">
                 <span className="font-bold">Click to upload</span> or drag and drop
               </p>
-              <p className="text-slate-500 text-xs sm:text-sm mt-2">
+              <p className="text-slate-400 text-xs sm:text-sm mt-2 font-medium">
                 PDF, DOC, TXT, or Image files (max 25MB)
               </p>
             </div>
@@ -439,8 +439,8 @@ export default function ReadingAssistantPage() {
       )}
 
       {viewState === 'upload' && uploadedFile && (
-        <div className="w-full space-y-6">
-          <Card className="relative overflow-hidden border-0 rounded-2xl bg-[#EBF3FF] shadow-sm p-0">
+        <div className="w-full space-y-8">
+          <Card className="relative overflow-hidden border border-slate-100 rounded-2xl bg-gradient-to-br from-[#EBF3FF] via-white to-slate-50/50 shadow-[0_8px_30px_rgb(0,0,0,0.015)] p-0">
             <div className="absolute inset-0 opacity-[0.06]">
               <svg className="w-full h-full" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice">
                 <defs><pattern id="p2" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M0 30 Q15 15 30 30" fill="none" stroke="#407BFF" strokeWidth="1.5"/></pattern></defs>
@@ -450,36 +450,36 @@ export default function ReadingAssistantPage() {
             <CardContent className="relative z-10 p-8 flex items-center gap-6">
               <div className="flex-shrink-0 w-28 h-22" aria-hidden="true" />
               <div>
-                <h2 className="text-lg font-bold text-slate-900 mb-1">Reading Assistant</h2>
-                <p className="text-sm text-slate-600">Study with confidence</p>
+                <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 mb-1 tracking-tight">Reading Assistant</h2>
+                <p className="text-sm text-slate-500 font-semibold">Study with confidence</p>
               </div>
             </CardContent>
           </Card>
 
-          <div className="space-y-5 max-w-md">
-            <p className="text-base font-semibold text-slate-900">Document uploaded</p>
+          <div className="space-y-5 max-w-2xl mx-auto sm:px-6">
+            <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Document uploaded</p>
             
-            <div className="flex items-center gap-4 bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-              <div className="w-12 h-12 rounded-xl bg-[#E8F3EA] flex items-center justify-center">
-                <BookOpenText className="w-6 h-6 text-[#3D6E4E]" />
+            <div className="flex items-center gap-4 bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.015)] border border-slate-100">
+              <div className="w-12 h-12 rounded-xl bg-[var(--primary-50)] border border-[var(--primary-100)]/20 flex items-center justify-center flex-shrink-0">
+                <BookOpenText className="w-6 h-6 text-[var(--primary-600)]" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-900 truncate">{uploadedFile.name.replace(/\.[^/.]+$/, '')}</p>
-                <p className="text-xs text-slate-400">{uploadedFile.name.split('.').pop()?.toUpperCase()}</p>
+                <p className="text-sm font-bold text-slate-800 truncate leading-snug">{uploadedFile.name.replace(/\.[^/.]+$/, '')}</p>
+                <p className="text-xs text-slate-400 font-semibold mt-0.5">{uploadedFile.name.split('.').pop()?.toUpperCase() || 'FILE'}</p>
               </div>
-              <button onClick={removeFile} className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors">
+              <motion.button whileTap={{ scale: 0.95 }} onClick={removeFile} className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all duration-200">
                 <X className="h-5 w-5" />
-              </button>
+              </motion.button>
             </div>
 
-            <Button onClick={handleSubmit} isLoading={isProcessing} className="w-full rounded-xl py-4 text-base font-semibold shadow-lg">
+            <motion.button whileHover={{ y: -2, boxShadow: "0 10px 15px -3px rgba(60, 131, 80, 0.15)" }} whileTap={{ scale: 0.98 }} onClick={handleSubmit} className="w-full bg-[var(--primary-500)] text-white font-bold py-4 px-6 rounded-xl hover:bg-[var(--primary-600)] transition-all duration-300 shadow-md shadow-[var(--primary-500)]/10">
               Submit Document
-            </Button>
+            </motion.button>
             
             {isProcessing && (
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
+              <div className="bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.015)] border border-slate-100 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-slate-900">
+                  <span className="text-sm font-bold text-slate-855">
                     {streamStage === 'extracting' && '📄 Extracting text...'}
                     {streamStage === 'storing' && '💾 Storing document...'}
                     {streamStage === 'summarizing' && '✨ Generating summary...'}
@@ -488,13 +488,13 @@ export default function ReadingAssistantPage() {
                     {streamStage === 'complete' && '✅ Complete!'}
                   </span>
                   {streamStage === 'tts' && (
-                    <span className="text-xs text-slate-500">{streamProgress}%</span>
+                    <span className="text-xs text-slate-400 font-semibold">{streamProgress}%</span>
                   )}
                 </div>
                 
                 <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-[#3D6E4E] transition-all duration-300 rounded-full"
+                    className="h-full bg-[var(--primary-500)] transition-all duration-350 rounded-full"
                     style={{ 
                       width: streamStage === 'extracting' ? '10%' :
                              streamStage === 'storing' ? '25%' :
@@ -507,25 +507,25 @@ export default function ReadingAssistantPage() {
                 </div>
                 
                 {streamingSummary && (
-                  <div className="mt-4 p-4 bg-slate-50 rounded-xl">
-                    <p className="text-xs font-semibold text-slate-500 mb-2">Summary Preview:</p>
-                    <p className="text-sm text-slate-900 line-clamp-4">{streamingSummary}</p>
+                  <div className="mt-4 p-4 bg-slate-50/70 border border-slate-100/50 rounded-xl">
+                    <p className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Summary Preview:</p>
+                    <p className="text-sm text-slate-600 leading-relaxed line-clamp-4 font-medium">{streamingSummary}</p>
                   </div>
                 )}
                 
                 {streamingVocab.length > 0 && (
                   <div className="mt-3">
-                    <p className="text-xs font-semibold text-slate-500 mb-2">
+                    <p className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">
                       Vocabulary ({streamingVocab.length} terms):
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 pt-1">
                       {streamingVocab.slice(0, 5).map((v, i) => (
-                        <span key={i} className="px-2 py-1 bg-[#EBF3FF] text-[#407BFF] text-xs rounded-lg">
+                        <span key={i} className="px-2.5 py-1 bg-sky-50 text-sky-600 text-xs font-semibold rounded-lg border border-sky-100">
                           {v.term}
                         </span>
                       ))}
                       {streamingVocab.length > 5 && (
-                        <span className="px-2 py-1 bg-slate-100 text-slate-500 text-xs rounded-lg">
+                        <span className="px-2.5 py-1 bg-slate-50 text-slate-400 text-xs font-semibold rounded-lg border border-slate-100">
                           +{streamingVocab.length - 5} more
                         </span>
                       )}
@@ -534,8 +534,8 @@ export default function ReadingAssistantPage() {
                 )}
                 
                 {isSlowConnection && (
-                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
-                    <p className="text-sm text-amber-800 flex items-center gap-2">
+                  <div className="mt-4 p-4 bg-amber-50/70 border border-amber-200/50 rounded-xl">
+                    <p className="text-sm text-amber-800 flex items-center gap-2.5 font-medium">
                       <span>⏱️</span>
                       <span>This is taking longer than usual. Please don&apos;t close this page.</span>
                     </p>
@@ -548,36 +548,37 @@ export default function ReadingAssistantPage() {
       )}
 
       {viewState === 'reading' && (
-        <div className="flex gap-6">
+        <div className="flex flex-col lg:flex-row gap-8">
           <div className="flex-1">
             <Card 
-              className="border border-slate-200 shadow-sm rounded-2xl overflow-hidden" 
+              className="border border-slate-105 shadow-[0_8px_30px_rgb(0,0,0,0.015)] rounded-2xl overflow-hidden transition-all duration-300" 
               style={{ backgroundColor: BACKGROUND_TINTS[backgroundTint] }}
             >
               {/* Header */}
-              <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-slate-200" style={{ backgroundColor: `${BACKGROUND_TINTS[backgroundTint]}f0` }}>
-                <div className="flex items-center gap-2.5 px-3 py-1.5 bg-white rounded-lg border border-slate-200 text-sm shadow-sm">
-                  <BookOpenText className="w-4 h-4 text-[#3D6E4E]" />
-                  <span className="text-slate-900 font-medium truncate max-w-[140px]">{uploadedFile?.name || 'Document'}</span>
+              <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-slate-100 bg-white/90 backdrop-blur-sm" style={{ backgroundColor: `${BACKGROUND_TINTS[backgroundTint]}ee` }}>
+                  <div className="flex items-center gap-2.5 px-3 py-1.5 bg-white rounded-xl border border-slate-200/70 text-sm shadow-sm">
+                    <BookOpenText className="w-4 h-4 text-[var(--primary-600)]" />
+                  <span className="text-slate-800 font-bold truncate max-w-[140px] sm:max-w-[200px]">{uploadedFile?.name || 'Document'}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button 
-                    onClick={() => setTextMode('original')} 
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      textMode === 'original'
-                        ? 'bg-white text-slate-900 border border-[#3D6E4E] shadow-sm'
-                        : 'bg-transparent text-slate-600 hover:bg-white/50'
-                    }`}
-                  >
-                    Original
-                  </button>
+                  <div className="flex items-center bg-slate-100/60 p-0.5 rounded-xl border border-slate-200/40">
+                    <button 
+                      onClick={() => setTextMode('original')} 
+                      className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                        textMode === 'original'
+                          ? 'bg-white text-slate-900 shadow-sm border border-slate-100'
+                          : 'bg-transparent text-slate-500 hover:text-slate-700'
+                      }`}
+                    >
+                      Original
+                    </button>
                   {summarizedText && (
                     <button 
                       onClick={() => setTextMode('summarized')} 
-                      className={`px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all ${
+                      className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
                         textMode === 'summarized'
-                          ? 'bg-[#3D6E4E] text-white border-[#3D6E4E] shadow-sm'
-                          : 'bg-transparent text-slate-600 hover:bg-white/50'
+                          ? 'bg-white text-slate-900 shadow-sm border border-slate-100'
+                          : 'bg-transparent text-slate-500 hover:text-slate-700'
                       }`}
                     >
                       Summary
@@ -586,31 +587,33 @@ export default function ReadingAssistantPage() {
                   <div className="relative">
                     <button 
                       onClick={(e) => { e.stopPropagation(); setShowDifficultyDropdown(!showDifficultyDropdown); }} 
-                      className={`px-4 py-2 rounded-xl text-sm font-medium border flex items-center gap-2 transition-all ${
+                      className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-1 transition-all ${
                         textMode === 'simplified'
-                          ? 'bg-[#3D6E4E] text-white border-[#3D6E4E] shadow-sm'
-                          : 'bg-transparent text-slate-600 hover:bg-white/50 border-transparent'
+                          ? 'bg-white text-slate-900 shadow-sm border border-slate-100'
+                          : 'bg-transparent text-slate-500 hover:text-slate-700'
                       }`}
                     >
                       Simplified
+                      <span className="text-[10px] text-slate-400">▼</span>
                     </button>
                     {showDifficultyDropdown && (
-                      <div className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-lg border border-slate-200 py-2 w-36 z-50" onClick={(e) => e.stopPropagation()}>
-                        <button onClick={() => handleDifficultySelect('beginner')} disabled={isSimplifying} className={`block w-full text-left px-4 py-2.5 text-sm ${difficulty === 'beginner' ? 'bg-[#f0f7f1] text-[#3D6E4E] font-semibold' : 'text-slate-600 hover:bg-slate-50'} ${isSimplifying ? 'opacity-50 cursor-not-allowed' : ''}`}>Beginner</button>
-                        <button onClick={() => handleDifficultySelect('intermediate')} disabled={isSimplifying} className={`block w-full text-left px-4 py-2.5 text-sm ${difficulty === 'intermediate' ? 'bg-[#f0f7f1] text-[#3D6E4E] font-semibold' : 'text-slate-600 hover:bg-slate-50'} ${isSimplifying ? 'opacity-50 cursor-not-allowed' : ''}`}>Intermediate</button>
+                      <div className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-2xl border border-slate-200/80 py-2 w-36 z-50 animate-in fade-in slide-in-from-top-1 duration-200" onClick={(e) => e.stopPropagation()}>
+                        <button onClick={() => handleDifficultySelect('beginner')} disabled={isSimplifying} className={`block w-full text-left px-4 py-2 text-sm ${difficulty === 'beginner' ? 'bg-[var(--primary-50)] text-[var(--primary-700)] font-bold' : 'text-slate-600 hover:bg-slate-50'} ${isSimplifying ? 'opacity-50' : ''}`}>Beginner</button>
+                        <button onClick={() => handleDifficultySelect('intermediate')} disabled={isSimplifying} className={`block w-full text-left px-4 py-2 text-sm ${difficulty === 'intermediate' ? 'bg-[var(--primary-50)] text-[var(--primary-700)] font-bold' : 'text-slate-600 hover:bg-slate-50'} ${isSimplifying ? 'opacity-50' : ''}`}>Intermediate</button>
                       </div>
                     )}
+                  </div>
                   </div>
                   {summarizedText && (
                     <button 
                       onClick={() => setFocusMode(true)} 
-                      className="p-2.5 rounded-lg hover:bg-black/5 text-slate-600 transition-colors ml-1" 
+                      className="p-2 rounded-full hover:bg-slate-150/40 text-slate-500 transition-colors ml-1" 
                       title="Focus Mode (Fullscreen)"
                     >
                       <Focus className="w-5 h-5" />
                     </button>
                   )}
-                  <button onClick={() => setViewState('home')} className="p-2.5 rounded-lg hover:bg-black/5 text-slate-600 transition-colors">
+                  <button onClick={() => setViewState('home')} className="p-2 rounded-full hover:bg-rose-50 text-rose-500 transition-colors">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
