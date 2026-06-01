@@ -477,11 +477,4 @@ export default function Sidebar() {
       </AnimatePresence>
     </>
   );
-
-  return (
-    <>
-      {desktopSidebar}
-      {mobileDrawer}
-    </>
-  );
 }
