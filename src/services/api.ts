@@ -806,7 +806,7 @@ export const authApi = {
     }).then(r => unwrap(r) as User),
   
   refreshToken: async (refreshToken: string): Promise<LoginResponse> => {
-    const response = await fetch('/api/v1/auth/refresh', {
+    const response = await fetch(`${env.NEXT_PUBLIC_API_GATEWAY_URL}/api/v1/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refresh_token: refreshToken }),
