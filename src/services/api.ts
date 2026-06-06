@@ -883,8 +883,10 @@ export const flashcardApi = {
   
   generateFromContent: async (contentOrFile: string | File, userId: string): Promise<GenerateFlashcardsResponse> => {
     const formData = new FormData();
-    if (contentOrFile instanceof File) {
-      formData.append('file', contentOrFile);
+    const isFile = contentOrFile instanceof File || (typeof contentOrFile === 'object' && contentOrFile !== null && 'name' in contentOrFile && 'size' in contentOrFile);
+    console.log('[API] generateFromContent (flashcards) - isFile:', isFile, 'name:', isFile ? (contentOrFile as File).name : 'N/A');
+    if (isFile) {
+      formData.append('file', contentOrFile as File);
     } else {
       // Create a text file from the content
       const blob = new Blob([contentOrFile], { type: 'text/plain' });
@@ -990,8 +992,10 @@ export const quizApi = {
   
   generateFromContent: async (contentOrFile: string | File, userId: string, quizType: 'multiple_choice' | 'theory' = 'multiple_choice', numQuestions: number = 5): Promise<GenerateQuizResponse> => {
     const formData = new FormData();
-    if (contentOrFile instanceof File) {
-      formData.append('file', contentOrFile);
+    const isFile = contentOrFile instanceof File || (typeof contentOrFile === 'object' && contentOrFile !== null && 'name' in contentOrFile && 'size' in contentOrFile);
+    console.log('[API] generateFromContent (quizzes) - isFile:', isFile, 'name:', isFile ? (contentOrFile as File).name : 'N/A');
+    if (isFile) {
+      formData.append('file', contentOrFile as File);
     } else {
       // Create a text file from the content
       const blob = new Blob([contentOrFile], { type: 'text/plain' });
