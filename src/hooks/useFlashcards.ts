@@ -49,7 +49,7 @@ export function useCreateFlashcardDeck() {
 // Hook to generate flashcards from content
 export function useGenerateFlashcards() {
   return useMutation({
-    mutationFn: ({ content, userId }: { content: string; userId: string }) =>
+    mutationFn: ({ content, userId }: { content: string | File; userId: string }) =>
       flashcardApi.generateFromContent(content, userId),
     onError: (error: ApiError) => {
       toast.error(error.message || 'Failed to generate flashcards');

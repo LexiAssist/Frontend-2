@@ -510,7 +510,7 @@ function QuizResults({
 
 export default function QuizzesPage() {
   const [viewState, setViewState] = useState<ViewState>('upload');
-  const [uploadedFile, setUploadedFile] = useState<{ name: string; content: string } | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<{ name: string; content: string; rawFile?: File } | null>(null);
   const [generatedQuiz, setGeneratedQuiz] = useState<GeneratedQuiz | null>(null);
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
   const [currentAttemptId, setCurrentAttemptId] = useState<string | null>(null);
@@ -539,6 +539,7 @@ export default function QuizzesPage() {
       setUploadedFile({
         name: file.name.replace(/\.[^/.]+$/, ""),
         content: content,
+        rawFile: file,
       });
       setViewState('ready');
     };
@@ -549,6 +550,7 @@ export default function QuizzesPage() {
       setUploadedFile({
         name: file.name.replace(/\.[^/.]+$/, ""),
         content: `Generate a quiz about: ${file.name}`,
+        rawFile: file,
       });
       setViewState('ready');
     }
@@ -561,7 +563,7 @@ export default function QuizzesPage() {
     setViewState('upload');
   };
 
-  const handleGenerate = async (content: string) => {
+  const handleGenerate = async (content: string | File) => {
     if (!user?.id) {
       toast.error('Please log in to generate quizzes');
       return;
@@ -808,7 +810,7 @@ export default function QuizzesPage() {
             <DocumentCard
               name={uploadedFile.name}
               onRemove={handleRemoveFile}
-              onSubmit={() => handleGenerate(uploadedFile.content)}
+              onSubmit={() => handleGenerate(uploadedFile.rawFile || uploadedFile.content)}
               isLoading={generateMutation.isPending}
             />
           </motion.div>

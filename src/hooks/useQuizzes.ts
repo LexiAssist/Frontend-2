@@ -51,7 +51,7 @@ export function useCreateQuiz() {
 export function useGenerateQuiz() {
   return useMutation({
     mutationFn: ({ content, userId, quizType, numQuestions }: { 
-      content: string; 
+      content: string | File; 
       userId: string;
       quizType?: 'multiple_choice' | 'theory';
       numQuestions?: number;

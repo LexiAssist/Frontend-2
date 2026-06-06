@@ -25,6 +25,7 @@ type SelectedDocument = {
   name: string;
   extension: string;
   content?: string;
+  rawFile?: File;
 };
 
 type GeneratedFlashcard = {
@@ -395,6 +396,7 @@ export default function FlashcardsPage() {
         name: getDisplayName(file.name),
         extension: getExtension(file.name),
         content: content,
+        rawFile: file,
       });
       setViewState("ready");
     };
@@ -407,6 +409,7 @@ export default function FlashcardsPage() {
         name: getDisplayName(file.name),
         extension: getExtension(file.name),
         content: `Generate flashcards from the document: ${file.name}`,
+        rawFile: file,
       });
       setViewState("ready");
     }
@@ -420,7 +423,7 @@ export default function FlashcardsPage() {
     setViewState("upload");
   };
 
-  const handleGenerate = useCallback(async (content: string) => {
+  const handleGenerate = useCallback(async (content: string | File) => {
     if (!user?.id) {
       toast.error('Please log in to generate flashcards');
       return;
@@ -477,8 +480,8 @@ export default function FlashcardsPage() {
   };
 
   const handleDocumentSubmit = () => {
-    if (selectedDocument?.content) {
-      handleGenerate(selectedDocument.content);
+    if (selectedDocument) {
+      handleGenerate(selectedDocument.rawFile || selectedDocument.content || "");
     }
   };
 

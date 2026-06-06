@@ -881,13 +881,16 @@ export const flashcardApi = {
   createDeck: (data: CreateDeckData) =>
     fetchApi<{ data: FlashcardDeck }>('/flashcard-decks', { method: 'POST', body: JSON.stringify(data) }).then(r => unwrap(r) as FlashcardDeck),
   
-  generateFromContent: async (content: string, userId: string): Promise<GenerateFlashcardsResponse> => {
-    // Create a text file from the content
-    const blob = new Blob([content], { type: 'text/plain' });
-    const file = new File([blob], 'flashcards.txt', { type: 'text/plain' });
-    
+  generateFromContent: async (contentOrFile: string | File, userId: string): Promise<GenerateFlashcardsResponse> => {
     const formData = new FormData();
-    formData.append('file', file);
+    if (contentOrFile instanceof File) {
+      formData.append('file', contentOrFile);
+    } else {
+      // Create a text file from the content
+      const blob = new Blob([contentOrFile], { type: 'text/plain' });
+      const file = new File([blob], 'flashcards.txt', { type: 'text/plain' });
+      formData.append('file', file);
+    }
     formData.append('user_id', userId);
     formData.append('num_cards', '10');
     
@@ -985,13 +988,16 @@ export const quizApi = {
     return unwrap(result) as QuizResult;
   },
   
-  generateFromContent: async (content: string, userId: string, quizType: 'multiple_choice' | 'theory' = 'multiple_choice', numQuestions: number = 5): Promise<GenerateQuizResponse> => {
-    // Create a text file from the content
-    const blob = new Blob([content], { type: 'text/plain' });
-    const file = new File([blob], 'quiz.txt', { type: 'text/plain' });
-    
+  generateFromContent: async (contentOrFile: string | File, userId: string, quizType: 'multiple_choice' | 'theory' = 'multiple_choice', numQuestions: number = 5): Promise<GenerateQuizResponse> => {
     const formData = new FormData();
-    formData.append('file', file);
+    if (contentOrFile instanceof File) {
+      formData.append('file', contentOrFile);
+    } else {
+      // Create a text file from the content
+      const blob = new Blob([contentOrFile], { type: 'text/plain' });
+      const file = new File([blob], 'quiz.txt', { type: 'text/plain' });
+      formData.append('file', file);
+    }
     formData.append('user_id', userId);
     formData.append('quiz_type', quizType);
     formData.append('num_questions', String(numQuestions));
