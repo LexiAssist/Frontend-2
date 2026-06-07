@@ -54,12 +54,14 @@ export function useRetrieveContext() {
     mutationFn: ({ 
       query, 
       userId, 
+      materialId,
       topK 
     }: { 
       query: string; 
       userId: string; 
+      materialId?: string;
       topK?: number;
-    }) => aiApi.retrieveContext(query, userId, topK),
+    }) => aiApi.retrieveContext(query, userId, materialId, topK),
   });
 }
 

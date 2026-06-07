@@ -1121,10 +1121,10 @@ export const aiApi = {
       }),
     }),
   
-  retrieveContext: (query: string, userId: string, topK = 5) =>
+  retrieveContext: (query: string, userId: string, materialId?: string, topK = 5) =>
     fetchApi<RetrieveResponse>('/ai/retrieve', {
       method: 'POST',
-      body: JSON.stringify({ query, user_id: userId, top_k: topK }),
+      body: JSON.stringify({ query, user_id: userId, material_id: materialId, top_k: topK }),
     }),
   
   // Generate quiz from pasted text (not file)

@@ -235,11 +235,14 @@ export default function ChatAssistantPage() {
     try {
       // Retrieve context chunks from the retrieval service
       let contextChunks: string[] = [];
+      const activeMaterialId = uploadedFiles.length === 1 ? uploadedFiles[0].id : undefined;
+
       if (uploadedFiles.length > 0) {
         try {
           const retrievalResult = await aiApi.retrieveContext(
             userMessage.content,
             user.id,
+            activeMaterialId,
             5 // top_k
           );
           contextChunks = retrievalResult.results?.map((c: { chunk_text?: string }) => c.chunk_text).filter((t): t is string => typeof t === 'string') || [];
@@ -259,6 +262,7 @@ export default function ChatAssistantPage() {
             {
               conversationId,
               contextChunks,
+              materialId: activeMaterialId,
             },
             (token: string) => {
               setStreamingMessage(prev => prev + token);
@@ -303,6 +307,7 @@ export default function ChatAssistantPage() {
           options: {
             conversationId,
             contextChunks,
+            materialId: activeMaterialId,
           },
         });
 
