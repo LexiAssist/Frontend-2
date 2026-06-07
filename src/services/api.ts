@@ -1366,23 +1366,15 @@ export const materialApi = {
       .replace(/[^a-zA-Z0-9_.-]/g, '') // Remove special characters
       .replace(/^.*[\\\/]/, '');      // Get basename only
     
-    // Call ingestion service directly (not through gateway)
-    const response = await fetch(`${env.NEXT_PUBLIC_INGESTION_URL}/process-from-storage`, {
+    // Call ingestion service via the Gateway
+    await fetchApi<void>('/process-from-storage', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         material_id: materialId,
         user_id: userId,
         filename: sanitizedFilename,
       }),
     });
-    
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Ingestion failed: ${error}`);
-    }
   },
   
   create: (data: CreateMaterialData) =>
