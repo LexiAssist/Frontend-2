@@ -121,6 +121,35 @@ export default function ChatAssistantPage() {
     }
   }, [prompt, messages.length]);
 
+  // Poll status of processing files to transition visually to 'ready'
+  useEffect(() => {
+    const processingFiles = uploadedFiles.filter(f => f.status === 'processing');
+    if (processingFiles.length === 0) return;
+
+    const interval = setInterval(async () => {
+      for (const file of processingFiles) {
+        try {
+          const material = await materialApi.getById(file.id);
+          if (material.processing_status === 'completed') {
+            setUploadedFiles(prev =>
+              prev.map(f => f.id === file.id ? { ...f, status: 'ready' } : f)
+            );
+            toast.success(`${file.name} is ready for AI assistant!`);
+          } else if (material.processing_status === 'failed') {
+            setUploadedFiles(prev =>
+              prev.map(f => f.id === file.id ? { ...f, status: 'error' } : f)
+            );
+            toast.error(`${file.name} failed processing.`);
+          }
+        } catch (err) {
+          console.error('Error polling material status:', err);
+        }
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [uploadedFiles]);
+
   const openFilePicker = () => fileInputRef.current?.click();
   const openFolderPicker = () => folderInputRef.current?.click();
 
