@@ -192,7 +192,7 @@ describe('Analytics and Goals Integration', () => {
           description: 'Finish all chapters',
           target_date: '2024-12-31',
           goal_type: 'course_completion',
-          target_value: 100,
+          target_score: 100,
           current_value: 50,
           status: 'in_progress',
           created_at: '2024-01-01',
@@ -219,7 +219,7 @@ describe('Analytics and Goals Integration', () => {
         description: 'Maintain consistent study habit',
         target_date: '2024-12-31',
         goal_type: 'study_time',
-        target_value: 60,
+        target_score: 60,
       };
 
       const mockCreatedGoal: LearningGoal = {
@@ -227,7 +227,7 @@ describe('Analytics and Goals Integration', () => {
         user_id: 'user-123',
         ...goalData,
         current_value: 0,
-        target_value: 60,
+        target_score: 60,
         status: 'in_progress',
         created_at: '2024-01-15',
         updated_at: '2024-01-15',
@@ -248,7 +248,7 @@ describe('Analytics and Goals Integration', () => {
       const invalidGoalData = {
         title: '',
         goal_type: 'study_time',
-        target_value: -1,
+        target_score: -1,
       } as CreateGoalData;
 
       const { result } = renderHook(() => useCreateGoal(), { wrapper });
@@ -274,7 +274,7 @@ describe('Analytics and Goals Integration', () => {
         user_id: 'user-123',
         title: 'Complete Biology Course',
         goal_type: 'course_completion',
-        target_value: 100,
+        target_score: 100,
         current_value: 100,
         status: 'completed',
         created_at: '2024-01-01',
@@ -301,7 +301,7 @@ describe('Analytics and Goals Integration', () => {
           user_id: 'user-123',
           title: 'Study 100 hours',
           goal_type: 'study_time',
-          target_value: 100,
+          target_score: 100,
           current_value: 75,
           status: 'in_progress',
           created_at: '2024-01-01',
@@ -318,7 +318,7 @@ describe('Analytics and Goals Integration', () => {
       });
 
       const goal = result.current.data![0];
-      const progressPercentage = (goal.current_value / goal.target_value) * 100;
+      const progressPercentage = ((goal.current_value || 0) / (goal.target_score || 1)) * 100;
       
       expect(progressPercentage).toBe(75);
       expect(goal.status).toBe('in_progress');
@@ -331,7 +331,7 @@ describe('Analytics and Goals Integration', () => {
           user_id: 'user-123',
           title: 'Quiz Score Goal',
           goal_type: 'quiz_score',
-          target_value: 90,
+          target_score: 90,
           current_value: 85,
           status: 'in_progress',
           created_at: '2024-01-01',
@@ -342,7 +342,7 @@ describe('Analytics and Goals Integration', () => {
           user_id: 'user-123',
           title: 'Study Streak Goal',
           goal_type: 'streak',
-          target_value: 30,
+          target_score: 30,
           current_value: 15,
           status: 'in_progress',
           created_at: '2024-01-01',
@@ -385,7 +385,7 @@ describe('Analytics and Goals Integration', () => {
       const goalData: CreateGoalData = {
         title: 'Test Goal',
         goal_type: 'study_time',
-        target_value: 60,
+        target_score: 60,
       };
 
       result.current.mutate(goalData);

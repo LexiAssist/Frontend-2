@@ -91,3 +91,36 @@ export function useCompleteGoal() {
     },
   });
 }
+
+// Hook to update goal
+export function useUpdateGoal() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<Parameters<typeof analyticsApi.createGoal>[0]> }) =>
+      analyticsApi.updateGoal(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: analyticsKeys.goals() });
+      toast.success('Goal updated successfully!');
+    },
+    onError: (error: ApiError) => {
+      toast.error(error.message || 'Failed to update goal');
+    },
+  });
+}
+
+// Hook to delete goal
+export function useDeleteGoal() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: analyticsApi.deleteGoal,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: analyticsKeys.goals() });
+      toast.success('Goal deleted successfully!');
+    },
+    onError: (error: ApiError) => {
+      toast.error(error.message || 'Failed to delete goal');
+    },
+  });
+}

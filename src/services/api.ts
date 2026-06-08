@@ -561,8 +561,8 @@ export interface LearningGoal {
   title: string;
   description?: string;
   target_date?: string;
-  target_value: number;
-  current_value: number;
+  target_score?: number;
+  current_value?: number;
   goal_type?: 'study_time' | 'quiz_score' | 'streak' | 'course_completion';
   is_completed?: boolean;
   completed_at?: string;
@@ -1266,7 +1266,13 @@ export const analyticsApi = {
     
   createGoal: (data: CreateGoalData) =>
     fetchApi<{ data: LearningGoal }>('/analytics/goals', { method: 'POST', body: JSON.stringify(data) }).then(r => unwrap(r) as LearningGoal),
-    
+
+  updateGoal: (id: string, data: Partial<CreateGoalData>) =>
+    fetchApi<{ data: LearningGoal }>(`/analytics/goals/${id}`, { method: 'PUT', body: JSON.stringify(data) }).then(r => unwrap(r) as LearningGoal),
+
+  deleteGoal: (id: string) =>
+    fetchApi<void>(`/analytics/goals/${id}`, { method: 'DELETE' }),
+
   completeGoal: (id: string) =>
     fetchApi<{ data: LearningGoal }>(`/analytics/goals/${id}/complete`, { method: 'POST' }).then(r => unwrap(r) as LearningGoal),
   

@@ -355,11 +355,13 @@ export interface LearningGoal {
   title: string;
   description?: string;
   target_date?: string;
-  goal_type: 'course_completion' | 'quiz_score' | 'study_time' | 'streak';
+  goal_type?: 'course_completion' | 'quiz_score' | 'study_time' | 'streak';
   course_id?: string;
-  target_value?: number;
+  target_score?: number;
   current_value?: number;
-  is_completed: boolean;
+  is_completed?: boolean;
+  status?: 'in_progress' | 'completed' | 'failed';
   completed_at?: string;
   created_at: string;
+  updated_at?: string;
 }
