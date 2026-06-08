@@ -14,11 +14,15 @@ import {
   Sparkles,
   Plus,
   MessageSquare,
+  Library,
+  Check,
+  Search,
 } from 'lucide-react';
 import { FeatureHeader } from '@/components/FeatureHeader';
 import { useAuthStore } from '@/store/authStore';
 import { useAIChat, useConversation } from '@/hooks/useAI';
 import { materialApi, aiApi } from '@/services/api';
+import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FormattedMessage } from '@/components/chat/FormattedMessage';
@@ -65,6 +69,7 @@ interface UploadedFile {
   id: string;
   name: string;
   status: 'uploading' | 'processing' | 'ready' | 'error';
+  source?: 'upload' | 'library';
 }
 
 export default function ChatAssistantPage() {
@@ -75,6 +80,9 @@ export default function ChatAssistantPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [useStreaming, setUseStreaming] = useState(false);
   const [streamingMessage, setStreamingMessage] = useState('');
+  const [showMaterialSelector, setShowMaterialSelector] = useState(false);
+  const [materialSearchQuery, setMaterialSearchQuery] = useState('');
+  const materialSelectorRef = useRef<HTMLDivElement>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -85,6 +93,12 @@ export default function ChatAssistantPage() {
   const chatMutation = useAIChat();
   
   const { data: conversationData, isLoading: isLoadingConversation } = useConversation(conversationId);
+  
+  const { data: userMaterials } = useQuery({
+    queryKey: ['materials'],
+    queryFn: () => materialApi.getAll(100, 0),
+    enabled: !!user?.id,
+  });
 
   useEffect(() => {
     if (folderInputRef.current) {
@@ -185,7 +199,7 @@ export default function ChatAssistantPage() {
         const materialId = await uploadFile(file);
         if (materialId && materialId.trim() !== '') {
           setUploadedFiles(prev => 
-            prev.map(f => f.id === tempId ? { ...f, id: materialId, status: 'processing' } : f)
+            prev.map(f => f.id === tempId ? { ...f, id: materialId, status: 'processing', source: 'upload' } : f)
           );
         }
       } catch (error) {
@@ -228,7 +242,7 @@ export default function ChatAssistantPage() {
         const materialId = await uploadFile(file);
         if (materialId && materialId.trim() !== '') {
           setUploadedFiles(prev => 
-            prev.map(f => f.id === tempId ? { ...f, id: materialId, status: 'processing' } : f)
+            prev.map(f => f.id === tempId ? { ...f, id: materialId, status: 'processing', source: 'upload' } : f)
           );
         }
       } catch (error) {
@@ -242,6 +256,33 @@ export default function ChatAssistantPage() {
 
   const removeFile = (fileId: string) => setUploadedFiles(prev => prev.filter(f => f.id !== fileId));
   const clearAllFiles = () => setUploadedFiles([]);
+
+  const attachLibraryMaterial = (material: { id: string; title: string }) => {
+    if (uploadedFiles.some(f => f.id === material.id)) return;
+    setUploadedFiles(prev => [
+      ...prev,
+      { id: material.id, name: material.title, status: 'ready', source: 'library' },
+    ]);
+    setShowMaterialSelector(false);
+    setMaterialSearchQuery('');
+  };
+
+  const detachLibraryMaterial = (materialId: string) => {
+    setUploadedFiles(prev => prev.filter(f => f.id !== materialId));
+  };
+
+  // Close material selector when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (materialSelectorRef.current && !materialSelectorRef.current.contains(event.target as Node)) {
+        setShowMaterialSelector(false);
+      }
+    };
+    if (showMaterialSelector) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showMaterialSelector]);
 
   const handleSubmit = async () => {
     if (!prompt.trim()) return;
@@ -381,56 +422,172 @@ export default function ChatAssistantPage() {
     setPrompt('');
   };
 
-  const AttachmentButton = ({ variant = 'default' }: { variant?: 'default' | 'compact' }) => (
-    <div className="flex items-center gap-1">
-      <input
-        ref={fileInputRef}
-        type="file"
-        multiple
-        accept=".pdf,.txt,.doc,.docx,.md"
-        className="hidden"
-        onChange={handleFileSelection}
-      />
-      <input
-        ref={folderInputRef}
-        type="file"
-        multiple
-        className="hidden"
-        onChange={handleFolderSelection}
-      />
-      
-      {variant === 'default' ? (
-        <div className="flex items-center overflow-hidden rounded-lg bg-slate-900 text-white">
-          <button
-            type="button"
-            onClick={openFilePicker}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium transition hover:bg-slate-800"
-          >
-            <Paperclip className="h-4 w-4" />
-            <span>Attach</span>
-          </button>
-          <button
-            type="button"
-            onClick={openFolderPicker}
-            className="border-l border-white/15 px-2.5 py-2 transition hover:bg-slate-800"
-            aria-label="Choose folder"
-            title="Choose folder"
-          >
-            <ChevronDown className="h-4 w-4" />
-          </button>
-        </div>
-      ) : (
-        <button
-          type="button"
-          onClick={openFilePicker}
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
-          title="Attach files"
-        >
-          <Paperclip className="h-5 w-5" />
-        </button>
-      )}
-    </div>
-  );
+  const AttachmentButton = ({ variant = 'default' }: { variant?: 'default' | 'compact' }) => {
+    const availableMaterials = (userMaterials || []).filter(m =>
+      m.processing_status === 'completed' &&
+      !uploadedFiles.some(f => f.id === m.id) &&
+      (materialSearchQuery === '' || m.title.toLowerCase().includes(materialSearchQuery.toLowerCase()))
+    );
+
+    return (
+      <div className="flex items-center gap-1">
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          accept=".pdf,.txt,.doc,.docx,.md"
+          className="hidden"
+          onChange={handleFileSelection}
+        />
+        <input
+          ref={folderInputRef}
+          type="file"
+          multiple
+          className="hidden"
+          onChange={handleFolderSelection}
+        />
+        
+        {variant === 'default' ? (
+          <div className="flex items-center gap-2">
+            <div className="flex items-center overflow-hidden rounded-lg bg-slate-900 text-white">
+              <button
+                type="button"
+                onClick={openFilePicker}
+                className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium transition hover:bg-slate-800"
+              >
+                <Paperclip className="h-4 w-4" />
+                <span>Attach</span>
+              </button>
+              <button
+                type="button"
+                onClick={openFolderPicker}
+                className="border-l border-white/15 px-2.5 py-2 transition hover:bg-slate-800"
+                aria-label="Choose folder"
+                title="Choose folder"
+              >
+                <ChevronDown className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="relative" ref={materialSelectorRef}>
+              <button
+                type="button"
+                onClick={() => setShowMaterialSelector(v => !v)}
+                className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition"
+                title="Select from your material library"
+              >
+                <Library className="h-4 w-4" />
+                <span>Library</span>
+              </button>
+              {showMaterialSelector && (
+                <div className="absolute bottom-full left-0 mb-2 w-80 bg-white rounded-xl border border-slate-200 shadow-lg z-50 overflow-hidden">
+                  <div className="p-3 border-b border-slate-100">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Your Materials</p>
+                    <div className="relative">
+                      <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        placeholder="Search materials..."
+                        value={materialSearchQuery}
+                        onChange={(e) => setMaterialSearchQuery(e.target.value)}
+                        className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary-500)]/20 focus:border-[var(--primary-500)]"
+                        autoFocus
+                      />
+                    </div>
+                  </div>
+                  <div className="max-h-64 overflow-y-auto">
+                    {availableMaterials.length === 0 ? (
+                      <div className="p-4 text-center text-sm text-slate-500">
+                        {materialSearchQuery
+                          ? 'No matching materials found'
+                          : 'No processed materials available. Upload files in the Materials tab first.'}
+                      </div>
+                    ) : (
+                      availableMaterials.map((material) => (
+                        <button
+                          key={material.id}
+                          type="button"
+                          onClick={() => attachLibraryMaterial(material)}
+                          className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left hover:bg-slate-50 transition group"
+                        >
+                          <div className="w-6 h-6 rounded-md bg-[var(--primary-50)] text-[var(--primary-600)] flex items-center justify-center flex-shrink-0">
+                            <FileText className="w-3.5 h-3.5" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-slate-700 truncate">{material.title}</p>
+                            <p className="text-[11px] text-slate-400">{material.course_id ? 'Course material' : 'General'}</p>
+                          </div>
+                          <Plus className="w-4 h-4 text-slate-300 group-hover:text-[var(--primary-500)] transition" />
+                        </button>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={openFilePicker}
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              title="Attach files"
+            >
+              <Paperclip className="h-5 w-5" />
+            </button>
+            <div className="relative" ref={materialSelectorRef}>
+              <button
+                type="button"
+                onClick={() => setShowMaterialSelector(v => !v)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                title="Select from library"
+              >
+                <Library className="h-4 w-4" />
+              </button>
+              {showMaterialSelector && (
+                <div className="absolute bottom-full left-0 mb-2 w-72 bg-white rounded-xl border border-slate-200 shadow-lg z-50 overflow-hidden">
+                  <div className="p-3 border-b border-slate-100">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Your Materials</p>
+                    <div className="relative">
+                      <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={materialSearchQuery}
+                        onChange={(e) => setMaterialSearchQuery(e.target.value)}
+                        className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary-500)]/20 focus:border-[var(--primary-500)]"
+                        autoFocus
+                      />
+                    </div>
+                  </div>
+                  <div className="max-h-56 overflow-y-auto">
+                    {availableMaterials.length === 0 ? (
+                      <div className="p-4 text-center text-sm text-slate-500">
+                        {materialSearchQuery ? 'No matches' : 'No materials available'}
+                      </div>
+                    ) : (
+                      availableMaterials.map((material) => (
+                        <button
+                          key={material.id}
+                          type="button"
+                          onClick={() => attachLibraryMaterial(material)}
+                          className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left hover:bg-slate-50 transition group"
+                        >
+                          <FileText className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                          <span className="text-sm text-slate-700 truncate flex-1">{material.title}</span>
+                          <Plus className="w-3.5 h-3.5 text-slate-300 group-hover:text-[var(--primary-500)] transition" />
+                        </button>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   const UploadedFilesList = ({ compact = false }: { compact?: boolean }) => {
     if (uploadedFiles.length === 0) return null;
@@ -447,19 +604,24 @@ export default function ChatAssistantPage() {
                 ? 'bg-amber-50 text-amber-700 border-amber-200'
                 : file.status === 'processing'
                 ? 'bg-blue-50 text-blue-700 border-blue-200'
+                : file.source === 'library'
+                ? 'bg-violet-50 text-violet-700 border-violet-200'
                 : 'bg-[var(--primary-50)] text-[var(--primary-700)] border-[var(--primary-200)]'
             }`}
           >
             {file.status === 'uploading' ? (
               <Loader2 className="h-3 w-3 animate-spin" />
+            ) : file.source === 'library' ? (
+              <Library className="h-3 w-3" />
             ) : (
               <FileText className="h-3 w-3" />
             )}
             <span className={compact ? "max-w-[120px] truncate" : "max-w-[140px] truncate"}>{file.name}</span>
             {!compact && file.status === 'uploading' && <span className="text-[10px]">uploading…</span>}
             {!compact && file.status === 'processing' && <span className="text-[10px]">processing…</span>}
-            <button 
-              onClick={() => removeFile(file.id)} 
+            {!compact && file.source === 'library' && <span className="text-[10px]">library</span>}
+            <button
+              onClick={() => removeFile(file.id)}
               className="ml-0.5 hover:text-red-500 transition-colors rounded-sm"
               disabled={file.status === 'uploading'}
             >
